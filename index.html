@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOPHON - Игровое развитие</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">▶</span>
+                <span class="logo-text">DOPHON</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link">ИГРА</a>
+                <a href="#" class="nav-link">СООБЩЕСТВО</a>
+                <a href="#" class="nav-link">ГЕРОИ</a>
+                <a href="#" class="nav-link">ПРАВИЛА</a>
+                <a href="#" class="nav-link">НАСТРОЙКИ</a>
+            </nav>
+            <div class="header-actions">
+                <button class="search-btn">🔍</button>
+                <button class="notification-btn">🔔</button>
+                <button class="messages-btn">💬</button>
+                <button class="cart-btn">🛒<span class="cart-count">3</span></button>
+                <div class="profile-btn">👤</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="titan-cards">
+                    <h3>ВАШИ ТИТАНЫ</h3>
+                    <div class="titan-card math">
+                        <div class="titan-icon">🧠</div>
+                        <div class="titan-info">
+                            <span class="titan-level">3L</span>
+                            <span class="titan-points">32</span>
+                        </div>
+                        <span class="titan-name">Математика</span>
+                    </div>
+                    <div class="titan-card memory">
+                        <div class="titan-icon">🔒</div>
+                        <span class="titan-name">Запоминание</span>
+                    </div>
+                </div>
+                
+                <!-- Game Banners -->
+                <div class="game-banners">
+                    <div class="game-banner math-game">
+                        <img src="assets/images/mathgame.png" alt="Math Game" class="game-banner-img">
+                    </div>
+                    <div class="game-banner memory-game">
+                        <img src="assets/images/memorygame.png" alt="Memory Game" class="game-banner-img">
+                    </div>
+                </div>
+                <button class="enter-btn">ЗАЙТИ</button>
+            </aside>
+
+            <!-- Center Content -->
+            <div class="center-content">
+                <!-- Character Section -->
+                <div class="character-section">
+                    <div class="level-badge">УРОВЕНЬ: 3</div>
+                    <div class="character-container">
+                        <div class="stat-circle left">
+                            <span class="stat-value">2000</span>
+                        </div>
+                        <div class="character-avatar">
+                            <img src="assets/images/characterfox.png" alt="Character Fox" class="character-img">
+                        </div>
+                        <div class="stat-circle right">
+                            <span class="stat-value">2000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-column left">
+                            <div class="stat-item">
+                                <span class="stat-icon">🧠</span>
+                                <span class="stat-label">ИНТЕЛЛЕКТ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⚡</span>
+                                <span class="stat-label">ВЫНОСЛИВОСТЬ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🎯</span>
+                                <span class="stat-label">НОВИЗНА</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">💎</span>
+                                <span class="stat-label">НАВЫКИ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-column right">
+                            <div class="stat-item">
+                                <span class="stat-icon">🎮</span>
+                                <span class="stat-label">ИГРЫ СЕГОДНЯ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-label">РЕЗУЛЬТАТ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">📊</span>
+                                <span class="stat-label">РЕЙТИНГ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🏆</span>
+                                <span class="stat-label">ДОСТИЖЕНИЯ</span>
+                                <span class="stat-number">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals Section -->
+                <div class="goals-section">
+                    <h3>ЗАМЕТКИ ЗАДАНИЯ ДНЯ</h3>
+                    <div class="goals-content">
+                        <div class="goals-left">
+                            <div class="goal-category">
+                                <h4>ВАШИ ПЛАНЫ</h4>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal1">
+                                    <label for="goal1">Утренняя зарядка</label>
+                                </div>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal2">
+                                    <label for="goal2">Изучить формулы</label>
+                                </div>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal3">
+                                    <label for="goal3">Решить задачи</label>
+                                </div>
+                            </div>
+                            <div class="dophon-tasks">
+                                <h4>ЗАДАЧИ ОТ DOPHON</h4>
+                            </div>
+                        </div>
+                        <div class="goals-right">
+                            <div class="goal-category">
+                                <h4>ПРЕДЛАГАЕМЫЕ ПЛАНЫ</h4>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal4">
+                                    <label for="goal4">Прочитать 10кр книг</label>
+                                </div>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal5">
+                                    <label for="goal5">30 отжиманий (3 подхода)</label>
+                                </div>
+                                <div class="goal-item">
+                                    <input type="checkbox" id="goal6">
+                                    <label for="goal6">30 отжиманий (3 подхода)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements Section -->
+                <div class="achievements-section">
+                    <h3>ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🏆</div>
+                            <span class="achievement-day">День 1</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">⭐</div>
+                            <span class="achievement-day">День 2</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">💎</div>
+                            <span class="achievement-day">День 3</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🎯</div>
+                            <span class="achievement-day">День 4</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🏅</div>
+                            <span class="achievement-day">День 5</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🏆</div>
+                            <span class="achievement-day">День 6</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🎖️</div>
+                            <span class="achievement-day">День 7</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🛡️</div>
+                            <span class="achievement-day">День 7</span>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🏆</div>
+                            <span class="achievement-day">День 7</span>
+                        </div>
+                        <div class="achievement-item claim-btn">
+                            <span>ЗАБРАТЬ</span>
+                        </div>
+                    </div>
+                    <div class="achievement-categories">
+                        <span class="category">GAME</span>
+                        <span class="category">СООБЩЕСТВО</span>
+                        <span class="category">HERO</span>
+                        <span class="category">HERO</span>
+                        <span class="category">НАСТРОЙКИ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="goals-month">
+                    <h3>ЦЕЛИ НА МЕСЯЦ</h3>
+                    <div class="goal-progress">
+                        <div class="goal-item-right">
+                            <span class="goal-icon">👤</span>
+                            <span class="goal-text">Изучить анатомию тела</span>
+                        </div>
+                        <div class="goal-item-right">
+                            <span class="goal-icon">🎯</span>
+                            <span class="goal-text">Научиться 10 новых</span>
+                        </div>
+                        <div class="goal-item-right">
+                            <span class="goal-icon">👤</span>
+                            <span class="goal-text">Освоить навыки</span>
+                        </div>
+                        <div class="goal-item-right">
+                            <span class="goal-icon">🎯</span>
+                            <span class="goal-text">Заработать 50 очков</span>
+                        </div>
+                        <div class="goal-item-right">
+                            <span class="goal-icon">👤</span>
+                            <span class="goal-text">Изучить 50 новых</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Bottom Section -->
+        <section class="bottom-section">
+            <!-- Progress Stats -->
+            <div class="progress-stats">
+                <h3>ВАША СТАТИСТИКА ПРОГРЕССА</h3>
+                <div class="stats-content">
+                    <div class="chart-container">
+                        <canvas id="progressChart" width="300" height="150"></canvas>
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress-circle">
+                            <div class="circle-content">
+                                <span class="circle-title">Распределение</span>
+                                <span class="circle-subtitle">Математика</span>
+                            </div>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-item">
+                                <span class="progress-label">ОПЫТ: 3540/3000</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Games -->
+            <div class="top-games">
+                <h3>ТОП ИГРОКОВ</h3>
+                <div class="games-list">
+                    <div class="game-item">
+                        <div class="game-icon purple">🧠</div>
+                        <div class="game-info">
+                            <span class="game-title">Прокачиваем Математика</span>
+                            <span class="game-score">1м 04.027</span>
+                        </div>
+                    </div>
+                    <div class="game-item">
+                        <div class="game-icon yellow">⚡</div>
+                        <div class="game-info">
+                            <span class="game-title">Быстрота мысли</span>
+                            <span class="game-score">1м 04.027</span>
+                        </div>
+                    </div>
+                    <div class="game-item">
+                        <div class="game-icon purple">🧠</div>
+                        <div class="game-info">
+                            <span class="game-title">Воспроизведение Навыков</span>
+                            <span class="game-score">1м 04.027</span>
+                        </div>
+                    </div>
+                    <div class="game-item">
+                        <div class="game-icon orange">🎯</div>
+                        <div class="game-info">
+                            <span class="game-title">Развитие навыков Навыков</span>
+                            <span class="game-score">1м 04.027</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Achievements -->
+        <section class="recent-achievements">
+            <div class="achievement-left">
+                <h3>ПОСЛЕДНИЕ ДОСТИЖЕНИЯ</h3>
+                <div class="achievement-chart">
+                    <canvas id="achievementChart" width="200" height="100"></canvas>
+                </div>
+                <div class="achievement-progress">
+                    <span class="achievement-label">ОПЫТ: 1940/2000</span>
+                    <div class="achievement-bar">
+                        <div class="achievement-fill" style="width: 97%"></div>
+                    </div>
+                </div>
+                <div class="achievement-reward">
+                    <div class="reward-icon">💎</div>
+                    <span class="reward-text">Прохождение игры навыков (Завтра)</span>
+                </div>
+            </div>
+            <div class="achievement-right">
+                <h3>ПОСЛЕДНИЕ ДОСТИЖЕНИЯ</h3>
+                <div class="achievement-list">
+                    <div class="achievement-entry">
+                        <div class="achievement-avatar">👤</div>
+                        <div class="achievement-details">
+                            <span class="achievement-name">Прохождение Математика</span>
+                            <span class="achievement-time">1м 04.027</span>
+                        </div>
+                        <span class="achievement-rank">1</span>
+                    </div>
+                    <div class="achievement-entry">
+                        <div class="achievement-avatar">👤</div>
+                        <div class="achievement-details">
+                            <span class="achievement-name">Прохождение Математика</span>
+                            <span class="achievement-time">1м 04.027</span>
+                        </div>
+                        <span class="achievement-rank">2</span>
+                    </div>
+                    <div class="achievement-entry">
+                        <div class="achievement-avatar">👤</div>
+                        <div class="achievement-details">
+                            <span class="achievement-name">Расширенное Навыков</span>
+                            <span class="achievement-time">1м 04.027</span>
+                        </div>
+                        <span class="achievement-rank">3</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">О НАС</a>
+                <a href="#">ПОДДЕРЖКА</a>
+                <a href="#">КОНФИДЕНЦИАЛЬНОСТЬ</a>
+                <a href="#">УСЛОВИЯ</a>
+                <a href="#">УСЛОВИЯ И ПОЛОЖЕНИЯ</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
