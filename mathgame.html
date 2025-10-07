@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математическая игра - 90 примеров</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-container {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(30, 15, 45, 0.95));
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(147, 51, 234, 0.4),
+                        0 0 100px rgba(6, 182, 212, 0.2);
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .progress-info {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06b6d4;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .timer {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f59e0b;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .game-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .main-game {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-display {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .question-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            z-index: 1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .answer-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px 20px;
+            font-size: 32px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(6, 182, 212, 0.5);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .answer-input:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .answer-input.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+            animation: correctFlash 0.5s ease-in-out;
+        }
+
+        .answer-input.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes correctFlash {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback-message {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 15px;
+            min-height: 30px;
+            z-index: 1;
+        }
+
+        .feedback-message.correct {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+            animation: fadeInOut 1s ease-in-out;
+        }
+
+        .feedback-message.incorrect {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .leaderboard {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-rank {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f59e0b;
+            min-width: 30px;
+        }
+
+        .leaderboard-time {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .start-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #9333ea;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+
+        .start-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.6);
+        }
+
+        .end-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .end-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .end-time {
+            font-size: 64px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.8);
+        }
+
+        .end-message {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #06b6d4);
+            border-radius: 4px;
+            transition: width 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
+        }
+
+        /* Scrollbar styling */
+        .leaderboard::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .leaderboard::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .leaderboard::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.5);
+            border-radius: 4px;
+        }
+
+        .leaderboard::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 20px;
+            }
+
+            .game-content {
+                flex-direction: column;
+            }
+
+            .leaderboard {
+                width: 100%;
+                max-height: 300px;
+            }
+
+            .question-text {
+                font-size: 36px;
+            }
+
+            .answer-input {
+                font-size: 24px;
+            }
+
+            .timer {
+                font-size: 24px;
+            }
+
+            .start-title, .end-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-overlay">
+        <div class="game-container">
+            <div class="close-btn" onclick="closeGame()">✕</div>
+            
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <div class="start-title">Математическая игра</div>
+                <div class="start-description">
+                    Решите 90 математических примеров за минимальное время!<br>
+                    Примеры включают сложение, вычитание, умножение и деление.<br>
+                    Побейте рекорд и попадите в таблицу лидеров!
+                </div>
+                <button class="start-btn" onclick="startGame()">Начать игру</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="gameScreen" style="display: none;">
+                <div class="game-header">
+                    <div class="progress-info">
+                        Вопрос: <span id="currentQuestion">1</span>/90
+                    </div>
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+
+                <div class="game-content">
+                    <div class="main-game">
+                        <div class="question-display">
+                            <div class="question-text" id="questionText">8 + 5</div>
+                            <input 
+                                type="number" 
+                                class="answer-input" 
+                                id="answerInput" 
+                                placeholder="?" 
+                                autocomplete="off"
+                                autofocus
+                            />
+                            <div class="feedback-message" id="feedbackMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard">
+                        <div class="leaderboard-title">🏆 Таблица рекордов</div>
+                        <div id="leaderboardList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Screen -->
+            <div id="endScreen" class="end-screen" style="display: none;">
+                <div class="end-title">🎉 Поздравляем!</div>
+                <div class="end-message">Вы решили все 90 примеров за:</div>
+                <div class="end-time" id="finalTime">00:00</div>
+                <div class="end-message" id="rankMessage"></div>
+                <button class="restart-btn" onclick="restartGame()">Играть снова</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let currentQuestionIndex = 0;
+        let startTime = 0;
+        let timerInterval = null;
+        let questions = [];
+        let leaderboard = [];
+
+        // Generate 90 random math questions
+        function generateQuestions() {
+            questions = [];
+            const operations = ['+', '-', '*', '/'];
+            
+            for (let i = 0; i < 90; i++) {
+                const operation = operations[Math.floor(Math.random() * operations.length)];
+                let num1, num2, answer;
+                
+                switch(operation) {
+                    case '+':
+                        num1 = Math.floor(Math.random() * 50) + 1;
+                        num2 = Math.floor(Math.random() * 50) + 1;
+                        answer = num1 + num2;
+                        break;
+                    case '-':
+                        num1 = Math.floor(Math.random() * 50) + 20;
+                        num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
+                        answer = num1 - num2;
+                        break;
+                    case '*':
+                        num1 = Math.floor(Math.random() * 12) + 2;
+                        num2 = Math.floor(Math.random() * 12) + 2;
+                        answer = num1 * num2;
+                        break;
+                    case '/':
+                        num2 = Math.floor(Math.random() * 11) + 2;
+                        answer = Math.floor(Math.random() * 15) + 2;
+                        num1 = num2 * answer;
+                        break;
+                }
+                
+                questions.push({
+                    question: `${num1} ${operation} ${num2}`,
+                    answer: answer
+                });
+            }
+        }
+
+        // Load leaderboard from localStorage
+        function loadLeaderboard() {
+            const saved = localStorage.getItem('mathGameLeaderboard');
+            if (saved) {
+                leaderboard = JSON.parse(saved);
+            } else {
+                leaderboard = [];
+            }
+            displayLeaderboard();
+        }
+
+        // Save leaderboard to localStorage
+        function saveLeaderboard() {
+            localStorage.setItem('mathGameLeaderboard', JSON.stringify(leaderboard));
+        }
+
+        // Display leaderboard
+        function displayLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            if (leaderboard.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">Пока нет рекордов</div>';
+                return;
+            }
+            
+            list.innerHTML = leaderboard
+                .sort((a, b) => a.time - b.time)
+                .slice(0, 10)
+                .map((record, index) => `
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">${index + 1}.</span>
+                        <span class="leaderboard-time">${formatTime(record.time)}</span>
+                    </div>
+                `)
+                .join('');
+        }
+
+        // Format time as MM:SS
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // Start game
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            generateQuestions();
+            currentQuestionIndex = 0;
+            startTime = Date.now();
+            
+            displayQuestion();
+            startTimer();
+            loadLeaderboard();
+            
+            // Focus on input
+            document.getElementById('answerInput').focus();
+        }
+
+        // Display current question
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedbackMessage').textContent = '';
+            document.getElementById('answerInput').className = 'answer-input';
+            
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / 90) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Focus on input
+            document.getElementById('answerInput').focus();
+        }
+
+        // Start timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('timer').textContent = formatTime(elapsed);
+            }, 100);
+        }
+
+        // Stop timer
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const input = document.getElementById('answerInput');
+            const feedback = document.getElementById('feedbackMessage');
+            const userAnswer = parseInt(input.value);
+            const correctAnswer = questions[currentQuestionIndex].answer;
+            
+            if (isNaN(userAnswer)) {
+                return;
+            }
+            
+            if (userAnswer === correctAnswer) {
+                input.className = 'answer-input correct';
+                feedback.textContent = '✓ Правильно!';
+                feedback.className = 'feedback-message correct';
+                
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    
+                    if (currentQuestionIndex >= 90) {
+                        endGame();
+                    } else {
+                        displayQuestion();
+                    }
+                }, 500);
+            } else {
+                input.className = 'answer-input incorrect';
+                feedback.textContent = '✗ Неправильно, попробуйте еще раз';
+                feedback.className = 'feedback-message incorrect';
+                input.value = '';
+            }
+        }
+
+        // End game
+        function endGame() {
+            stopTimer();
+            
+            const totalTime = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('finalTime').textContent = formatTime(totalTime);
+            
+            // Add to leaderboard
+            leaderboard.push({ time: totalTime, date: new Date().toISOString() });
+            saveLeaderboard();
+            
+            // Calculate rank
+            const sortedLeaderboard = [...leaderboard].sort((a, b) => a.time - b.time);
+            const rank = sortedLeaderboard.findIndex(record => record.time === totalTime) + 1;
+            
+            let rankMessage = '';
+            if (rank === 1) {
+                rankMessage = '🥇 Новый рекорд! Вы первый!';
+            } else if (rank <= 3) {
+                rankMessage = `🏅 Отличный результат! Вы на ${rank} месте!`;
+            } else if (rank <= 10) {
+                rankMessage = `🎯 Вы в топ-10! Место: ${rank}`;
+            } else {
+                rankMessage = `Ваше место: ${rank}`;
+            }
+            
+            document.getElementById('rankMessage').textContent = rankMessage;
+            
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'block';
+        }
+
+        // Restart game
+        function restartGame() {
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+
+        // Close game
+        function closeGame() {
+            if (confirm('Вы уверены, что хотите закрыть игру?')) {
+                window.close();
+                // If window.close() doesn't work (e.g., not opened by script), redirect back
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 100);
+            }
+        }
+
+        // Handle Enter key
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('answerInput');
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

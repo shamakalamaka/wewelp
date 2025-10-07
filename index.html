@@ -1064,8 +1064,8 @@
             <aside class="left-sidebar">
                 <div class="card">
                     <div class="card-title">Ваши Титаны</div>
-                    <div class="titan-card" style="padding: 0; overflow: hidden;">
-                        <img src="mathgame.png" alt="Математика" style="width: 100%; height: auto; display: block; border-radius: 10px;" />
+                    <div class="titan-card" id="mathGameBanner" style="padding: 0; overflow: hidden; cursor: pointer;">
+                        <img src="mathgame.png" alt="Математика" style="width: 100%; height: auto; display: block; border-radius: 10px; pointer-events: none;" />
                     </div>
                     <div class="titan-card locked" style="padding: 0; overflow: hidden; position: relative;">
                         <img src="memorygame.png" alt="Запоминалка" style="width: 100%; height: auto; display: block; border-radius: 10px;" />
@@ -1411,6 +1411,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             const newTaskInput = document.getElementById('newTaskInput');
             const tasksGrid = document.getElementById('tasksGrid');
+
+            // Math game banner click handler
+            const mathGameBanner = document.getElementById('mathGameBanner');
+            if (mathGameBanner) {
+                mathGameBanner.addEventListener('click', function() {
+                    window.open('mathgame.html', 'MathGame', 'width=1000,height=700,resizable=yes,scrollbars=yes');
+                });
+            }
 
             // Add new task on Enter key
             newTaskInput.addEventListener('keypress', function(e) {
