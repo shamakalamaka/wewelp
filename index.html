@@ -1011,6 +1011,399 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Math Game Modal */
+        .math-game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .math-game-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .math-game-container {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(30, 15, 45, 0.95));
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(147, 51, 234, 0.4),
+                        0 0 100px rgba(6, 182, 212, 0.2);
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .math-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .math-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .math-game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .math-progress-info {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06b6d4;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .math-timer {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f59e0b;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .math-game-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .math-main-game {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .math-question-display {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .math-question-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%);
+            animation: mathPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes mathPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .math-question-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            z-index: 1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .math-answer-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px 20px;
+            font-size: 32px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(6, 182, 212, 0.5);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .math-answer-input:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .math-answer-input.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+            animation: mathCorrectFlash 0.5s ease-in-out;
+        }
+
+        .math-answer-input.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            animation: mathShake 0.5s ease-in-out;
+        }
+
+        @keyframes mathCorrectFlash {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 1); }
+        }
+
+        @keyframes mathShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .math-feedback-message {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 15px;
+            min-height: 30px;
+            z-index: 1;
+        }
+
+        .math-feedback-message.correct {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+            animation: mathFadeInOut 1s ease-in-out;
+        }
+
+        .math-feedback-message.incorrect {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        }
+
+        @keyframes mathFadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .math-leaderboard {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .math-leaderboard-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .math-leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .math-leaderboard-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+
+        .math-leaderboard-rank {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f59e0b;
+            min-width: 30px;
+        }
+
+        .math-leaderboard-time {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .math-start-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .math-start-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #9333ea;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+
+        .math-start-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .math-start-btn {
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+        }
+
+        .math-start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.6);
+        }
+
+        .math-end-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .math-end-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .math-end-time {
+            font-size: 64px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.8);
+        }
+
+        .math-end-message {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .math-restart-btn {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .math-restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
+        }
+
+        .math-progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .math-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #06b6d4);
+            border-radius: 4px;
+            transition: width 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
+        }
+
+        .math-leaderboard::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .math-leaderboard::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .math-leaderboard::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.5);
+            border-radius: 4px;
+        }
+
+        .math-leaderboard::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.7);
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
             .main-grid {
@@ -1023,6 +1416,37 @@
             
             .achievements-section {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .math-game-container {
+                padding: 20px;
+            }
+
+            .math-game-content {
+                flex-direction: column;
+            }
+
+            .math-leaderboard {
+                width: 100%;
+                max-height: 300px;
+            }
+
+            .math-question-text {
+                font-size: 36px;
+            }
+
+            .math-answer-input {
+                font-size: 24px;
+            }
+
+            .math-timer {
+                font-size: 24px;
+            }
+
+            .math-start-title, .math-end-title {
+                font-size: 32px;
             }
         }
     </style>
@@ -1406,6 +1830,68 @@
         </footer>
     </div>
 
+    <!-- Math Game Modal -->
+    <div id="mathGameModal" class="math-game-modal">
+        <div class="math-game-container">
+            <div class="math-close-btn" onclick="closeMathGame()">✕</div>
+            
+            <!-- Start Screen -->
+            <div id="mathStartScreen" class="math-start-screen">
+                <div class="math-start-title">Математическая игра</div>
+                <div class="math-start-description">
+                    Решите 90 математических примеров за минимальное время!<br>
+                    Примеры включают сложение, вычитание, умножение и деление.<br>
+                    Побейте рекорд и попадите в таблицу лидеров!
+                </div>
+                <button class="math-start-btn" onclick="startMathGame()">Начать игру</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="mathGameScreen" style="display: none;">
+                <div class="math-game-header">
+                    <div class="math-progress-info">
+                        Вопрос: <span id="mathCurrentQuestion">1</span>/90
+                    </div>
+                    <div class="math-timer" id="mathTimer">00:00</div>
+                </div>
+
+                <div class="math-progress-bar-container">
+                    <div class="math-progress-bar" id="mathProgressBar" style="width: 0%"></div>
+                </div>
+
+                <div class="math-game-content">
+                    <div class="math-main-game">
+                        <div class="math-question-display">
+                            <div class="math-question-text" id="mathQuestionText">8 + 5</div>
+                            <input 
+                                type="number" 
+                                class="math-answer-input" 
+                                id="mathAnswerInput" 
+                                placeholder="?" 
+                                autocomplete="off"
+                            />
+                            <div class="math-feedback-message" id="mathFeedbackMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="math-leaderboard">
+                        <div class="math-leaderboard-title">🏆 Таблица рекордов</div>
+                        <div id="mathLeaderboardList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Screen -->
+            <div id="mathEndScreen" class="math-end-screen" style="display: none;">
+                <div class="math-end-title">🎉 Поздравляем!</div>
+                <div class="math-end-message">Вы решили все 90 примеров за:</div>
+                <div class="math-end-time" id="mathFinalTime">00:00</div>
+                <div class="math-end-message" id="mathRankMessage"></div>
+                <button class="math-restart-btn" onclick="restartMathGame()">Играть снова</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Task management functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -1416,7 +1902,7 @@
             const mathGameBanner = document.getElementById('mathGameBanner');
             if (mathGameBanner) {
                 mathGameBanner.addEventListener('click', function() {
-                    window.open('mathgame.html', 'MathGame', 'width=1000,height=700,resizable=yes,scrollbars=yes');
+                    openMathGame();
                 });
             }
 
@@ -1467,6 +1953,241 @@
                     toggleTaskCompletion(this, textElement);
                 });
             });
+        });
+
+        // Math Game Functions
+        let mathCurrentQuestionIndex = 0;
+        let mathStartTime = 0;
+        let mathTimerInterval = null;
+        let mathQuestions = [];
+        let mathLeaderboard = [];
+
+        function openMathGame() {
+            document.getElementById('mathGameModal').classList.add('active');
+            loadMathLeaderboard();
+        }
+
+        function closeMathGame() {
+            if (mathTimerInterval) {
+                if (confirm('Вы уверены, что хотите закрыть игру? Прогресс будет потерян.')) {
+                    document.getElementById('mathGameModal').classList.remove('active');
+                    stopMathTimer();
+                    resetMathGame();
+                }
+            } else {
+                document.getElementById('mathGameModal').classList.remove('active');
+                resetMathGame();
+            }
+        }
+
+        function resetMathGame() {
+            document.getElementById('mathStartScreen').style.display = 'block';
+            document.getElementById('mathGameScreen').style.display = 'none';
+            document.getElementById('mathEndScreen').style.display = 'none';
+            mathCurrentQuestionIndex = 0;
+            mathStartTime = 0;
+            if (mathTimerInterval) {
+                clearInterval(mathTimerInterval);
+                mathTimerInterval = null;
+            }
+        }
+
+        function generateMathQuestions() {
+            mathQuestions = [];
+            const operations = ['+', '-', '*', '/'];
+            
+            for (let i = 0; i < 90; i++) {
+                const operation = operations[Math.floor(Math.random() * operations.length)];
+                let num1, num2, answer;
+                
+                switch(operation) {
+                    case '+':
+                        num1 = Math.floor(Math.random() * 50) + 1;
+                        num2 = Math.floor(Math.random() * 50) + 1;
+                        answer = num1 + num2;
+                        break;
+                    case '-':
+                        num1 = Math.floor(Math.random() * 50) + 20;
+                        num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
+                        answer = num1 - num2;
+                        break;
+                    case '*':
+                        num1 = Math.floor(Math.random() * 12) + 2;
+                        num2 = Math.floor(Math.random() * 12) + 2;
+                        answer = num1 * num2;
+                        break;
+                    case '/':
+                        num2 = Math.floor(Math.random() * 11) + 2;
+                        answer = Math.floor(Math.random() * 15) + 2;
+                        num1 = num2 * answer;
+                        break;
+                }
+                
+                mathQuestions.push({
+                    question: `${num1} ${operation} ${num2}`,
+                    answer: answer
+                });
+            }
+        }
+
+        function loadMathLeaderboard() {
+            const saved = localStorage.getItem('mathGameLeaderboard');
+            if (saved) {
+                mathLeaderboard = JSON.parse(saved);
+            } else {
+                mathLeaderboard = [];
+            }
+            displayMathLeaderboard();
+        }
+
+        function saveMathLeaderboard() {
+            localStorage.setItem('mathGameLeaderboard', JSON.stringify(mathLeaderboard));
+        }
+
+        function displayMathLeaderboard() {
+            const list = document.getElementById('mathLeaderboardList');
+            if (mathLeaderboard.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">Пока нет рекордов</div>';
+                return;
+            }
+            
+            list.innerHTML = mathLeaderboard
+                .sort((a, b) => a.time - b.time)
+                .slice(0, 10)
+                .map((record, index) => `
+                    <div class="math-leaderboard-item">
+                        <span class="math-leaderboard-rank">${index + 1}.</span>
+                        <span class="math-leaderboard-time">${formatMathTime(record.time)}</span>
+                    </div>
+                `)
+                .join('');
+        }
+
+        function formatMathTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function startMathGame() {
+            document.getElementById('mathStartScreen').style.display = 'none';
+            document.getElementById('mathGameScreen').style.display = 'block';
+            
+            generateMathQuestions();
+            mathCurrentQuestionIndex = 0;
+            mathStartTime = Date.now();
+            
+            displayMathQuestion();
+            startMathTimer();
+            
+            document.getElementById('mathAnswerInput').focus();
+        }
+
+        function displayMathQuestion() {
+            const question = mathQuestions[mathCurrentQuestionIndex];
+            document.getElementById('mathQuestionText').textContent = question.question;
+            document.getElementById('mathCurrentQuestion').textContent = mathCurrentQuestionIndex + 1;
+            document.getElementById('mathAnswerInput').value = '';
+            document.getElementById('mathFeedbackMessage').textContent = '';
+            document.getElementById('mathAnswerInput').className = 'math-answer-input';
+            
+            const progress = ((mathCurrentQuestionIndex) / 90) * 100;
+            document.getElementById('mathProgressBar').style.width = progress + '%';
+            
+            document.getElementById('mathAnswerInput').focus();
+        }
+
+        function startMathTimer() {
+            mathTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - mathStartTime) / 1000);
+                document.getElementById('mathTimer').textContent = formatMathTime(elapsed);
+            }, 100);
+        }
+
+        function stopMathTimer() {
+            if (mathTimerInterval) {
+                clearInterval(mathTimerInterval);
+                mathTimerInterval = null;
+            }
+        }
+
+        function checkMathAnswer() {
+            const input = document.getElementById('mathAnswerInput');
+            const feedback = document.getElementById('mathFeedbackMessage');
+            const userAnswer = parseInt(input.value);
+            const correctAnswer = mathQuestions[mathCurrentQuestionIndex].answer;
+            
+            if (isNaN(userAnswer)) {
+                return;
+            }
+            
+            if (userAnswer === correctAnswer) {
+                input.className = 'math-answer-input correct';
+                feedback.textContent = '✓ Правильно!';
+                feedback.className = 'math-feedback-message correct';
+                
+                setTimeout(() => {
+                    mathCurrentQuestionIndex++;
+                    
+                    if (mathCurrentQuestionIndex >= 90) {
+                        endMathGame();
+                    } else {
+                        displayMathQuestion();
+                    }
+                }, 500);
+            } else {
+                input.className = 'math-answer-input incorrect';
+                feedback.textContent = '✗ Неправильно, попробуйте еще раз';
+                feedback.className = 'math-feedback-message incorrect';
+                input.value = '';
+            }
+        }
+
+        function endMathGame() {
+            stopMathTimer();
+            
+            const totalTime = Math.floor((Date.now() - mathStartTime) / 1000);
+            document.getElementById('mathFinalTime').textContent = formatMathTime(totalTime);
+            
+            mathLeaderboard.push({ time: totalTime, date: new Date().toISOString() });
+            saveMathLeaderboard();
+            
+            const sortedLeaderboard = [...mathLeaderboard].sort((a, b) => a.time - b.time);
+            const rank = sortedLeaderboard.findIndex(record => record.time === totalTime) + 1;
+            
+            let rankMessage = '';
+            if (rank === 1) {
+                rankMessage = '🥇 Новый рекорд! Вы первый!';
+            } else if (rank <= 3) {
+                rankMessage = `🏅 Отличный результат! Вы на ${rank} месте!`;
+            } else if (rank <= 10) {
+                rankMessage = `🎯 Вы в топ-10! Место: ${rank}`;
+            } else {
+                rankMessage = `Ваше место: ${rank}`;
+            }
+            
+            document.getElementById('mathRankMessage').textContent = rankMessage;
+            
+            document.getElementById('mathGameScreen').style.display = 'none';
+            document.getElementById('mathEndScreen').style.display = 'block';
+            
+            displayMathLeaderboard();
+        }
+
+        function restartMathGame() {
+            document.getElementById('mathEndScreen').style.display = 'none';
+            document.getElementById('mathStartScreen').style.display = 'block';
+        }
+
+        // Handle Enter key for math game
+        document.addEventListener('keypress', (e) => {
+            const modal = document.getElementById('mathGameModal');
+            if (modal.classList.contains('active') && e.key === 'Enter') {
+                const input = document.getElementById('mathAnswerInput');
+                if (document.activeElement === input) {
+                    checkMathAnswer();
+                }
+            }
         });
     </script>
 </body>
