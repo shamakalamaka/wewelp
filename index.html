@@ -1096,6 +1096,45 @@
                     </div>
                 </div>
 
+                <div class="tasks-section card">
+                    <div class="tasks-header">Заметки задания дня</div>
+                    <div class="tasks-tabs">
+                        <div class="task-tab active">Ваши Титаны</div>
+                        <div class="task-tab">Предлагаемые Планы</div>
+                    </div>
+                    
+                    <!-- Input field for new tasks -->
+                    <div style="margin-bottom: 15px;">
+                        <input type="text" id="newTaskInput" placeholder="Добавить новую задачу..." style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; font-size: 13px;" />
+                    </div>
+                    
+                    <div class="tasks-grid" id="tasksGrid">
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-text">Упражнения уйбор</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-text">Прочитать Твіто зона</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-text">Пожалуй фруктов</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-text">30 отжиманий (в процессе)</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tasks-header">Задания от DOPHON</div>
+                        <div class="task-item">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-text" style="text-decoration: line-through; opacity: 0.6;">30 отжиманий (в процессе)</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="skill-stats">
                     <div class="skill-item">
                         <div class="skill-icon"></div>
@@ -1136,39 +1175,6 @@
                         <div class="skill-icon"></div>
                         <span>ЛЮБОЗНАТЕЛЬНОСТЬ</span>
                         <span style="margin-left: auto;">0</span>
-                    </div>
-                </div>
-
-                <div class="tasks-section card">
-                    <div class="tasks-header">Заметки задания дня</div>
-                    <div class="tasks-tabs">
-                        <div class="task-tab active">Ваши Титаны</div>
-                        <div class="task-tab">Предлагаемые Планы</div>
-                    </div>
-                    <div class="tasks-grid">
-                        <div class="task-item">
-                            <div class="task-checkbox"></div>
-                            <div class="task-text">Упражнения уйбор</div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox"></div>
-                            <div class="task-text">Прочитать Твіто зона</div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox"></div>
-                            <div class="task-text">Пожалуй фруктов</div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox"></div>
-                            <div class="task-text">30 отжиманий (в процессе)</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <div class="tasks-header">Задания от DOPHON</div>
-                        <div class="task-item">
-                            <div class="task-checkbox checked"></div>
-                            <div class="task-text">30 отжиманий (в процессе)</div>
-                        </div>
                     </div>
                 </div>
             </main>
@@ -1399,5 +1405,61 @@
             <a href="#">Условия и разрешения</a>
         </footer>
     </div>
+
+    <script>
+        // Task management functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const newTaskInput = document.getElementById('newTaskInput');
+            const tasksGrid = document.getElementById('tasksGrid');
+
+            // Add new task on Enter key
+            newTaskInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    addNewTask(this.value.trim());
+                    this.value = '';
+                }
+            });
+
+            // Function to add new task
+            function addNewTask(taskText) {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+                taskItem.innerHTML = `
+                    <div class="task-checkbox"></div>
+                    <div class="task-text">${taskText}</div>
+                `;
+                tasksGrid.appendChild(taskItem);
+                
+                // Add click handler to the new checkbox
+                const checkbox = taskItem.querySelector('.task-checkbox');
+                const textElement = taskItem.querySelector('.task-text');
+                checkbox.addEventListener('click', function() {
+                    toggleTaskCompletion(this, textElement);
+                });
+            }
+
+            // Function to toggle task completion
+            function toggleTaskCompletion(checkbox, textElement) {
+                checkbox.classList.toggle('checked');
+                if (checkbox.classList.contains('checked')) {
+                    textElement.style.textDecoration = 'line-through';
+                    textElement.style.opacity = '0.6';
+                } else {
+                    textElement.style.textDecoration = 'none';
+                    textElement.style.opacity = '1';
+                }
+            }
+
+            // Add click handlers to existing checkboxes
+            document.querySelectorAll('.task-checkbox').forEach(function(checkbox) {
+                const taskItem = checkbox.closest('.task-item');
+                const textElement = taskItem.querySelector('.task-text');
+                
+                checkbox.addEventListener('click', function() {
+                    toggleTaskCompletion(this, textElement);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
