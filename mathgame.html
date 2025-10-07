@@ -862,11 +862,7 @@
                 'Подтвердите действие',
                 'Вы уверены, что хотите закрыть игру? Прогресс будет потерян.',
                 function() {
-                    window.close();
-                    // If window.close() doesn't work (e.g., not opened by script), redirect back
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 100);
+                    window.location.href = 'index.html';
                 },
                 function() {
                     // Do nothing on cancel
