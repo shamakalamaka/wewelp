@@ -3,345 +3,1447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOPHON - Игровое развитие</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>DOPHON - Игровое саморазвитие</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a0b2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing orbs */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-orb-1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.3) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .glow-orb-2 {
+            bottom: 20%;
+            right: 15%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite 1s;
+        }
+
+        .glow-orb-3 {
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+            animation: pulse 5s ease-in-out infinite 2s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #9333ea, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+        }
+
+        .nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: white;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-right: 30px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main content grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Left sidebar */
+        .left-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .titan-card {
+            background: linear-gradient(135deg, #f59e0b, #eab308);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .titan-card:hover {
+            transform: scale(1.05);
+        }
+
+        .titan-card.locked {
+            background: linear-gradient(135deg, #6b46c1, #ec4899);
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .titan-card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+        }
+
+        /* Center character section */
+        .character-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .level-display {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #9333ea, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .xp-circles {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .xp-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .xp-circle.intelligence {
+            border-color: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.8),
+                        0 0 40px rgba(245, 158, 11, 0.6),
+                        0 0 60px rgba(245, 158, 11, 0.4),
+                        inset 0 0 20px rgba(245, 158, 11, 0.2);
+            animation: neonPulseOrange 2s ease-in-out infinite;
+        }
+
+        .xp-circle.creativity {
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.8),
+                        0 0 40px rgba(6, 182, 212, 0.6),
+                        0 0 60px rgba(6, 182, 212, 0.4),
+                        inset 0 0 20px rgba(6, 182, 212, 0.2);
+            animation: neonPulseCyan 2s ease-in-out infinite;
+        }
+
+        @keyframes neonPulseOrange {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.8),
+                            0 0 40px rgba(245, 158, 11, 0.6),
+                            0 0 60px rgba(245, 158, 11, 0.4),
+                            inset 0 0 20px rgba(245, 158, 11, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 1),
+                            0 0 60px rgba(245, 158, 11, 0.8),
+                            0 0 90px rgba(245, 158, 11, 0.6),
+                            inset 0 0 30px rgba(245, 158, 11, 0.3);
+            }
+        }
+
+        @keyframes neonPulseCyan {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.8),
+                            0 0 40px rgba(6, 182, 212, 0.6),
+                            0 0 60px rgba(6, 182, 212, 0.4),
+                            inset 0 0 20px rgba(6, 182, 212, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(6, 182, 212, 1),
+                            0 0 60px rgba(6, 182, 212, 0.8),
+                            0 0 90px rgba(6, 182, 212, 0.6),
+                            inset 0 0 30px rgba(6, 182, 212, 0.3);
+            }
+        }
+
+        .xp-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .xp-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* Character placeholder */
+        .character-placeholder {
+            width: 200px;
+            height: 250px;
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-placeholder::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        /* Right sidebar */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .goal-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .goal-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #06b6d4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .goal-checkbox.completed {
+            background: #06b6d4;
+        }
+
+        /* Tasks section */
+        .tasks-section {
+            margin-top: 30px;
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .task-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Weekly rewards */
+        .weekly-rewards {
+            background: linear-gradient(135deg, #6b46c1, #ec4899);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .rewards-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .reward-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .reward-item.earned {
+            background: linear-gradient(135deg, #f59e0b, #eab308);
+            border-color: #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+
+        .reward-item:hover {
+            transform: scale(1.1);
+        }
+
+        .claim-button {
+            background: #06b6d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .claim-button:hover {
+            background: #0891b2;
+        }
+
+        /* Bottom sections */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .stats-chart {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 10px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background: linear-gradient(to top, #06b6d4, #9333ea);
+            border-radius: 4px 4px 0 0;
+            animation: growUp 2s ease-out;
+        }
+
+        @keyframes growUp {
+            from {
+                height: 0;
+            }
+        }
+
+        .chart-bar:nth-child(1) { height: 60px; }
+        .chart-bar:nth-child(2) { height: 120px; }
+        .chart-bar:nth-child(3) { height: 80px; }
+        .chart-bar:nth-child(4) { height: 100px; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #06b6d4);
+            border-radius: 4px;
+            transition: width 2s ease-out;
+        }
+
+        /* Leaderboard */
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.3s;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Advanced animations */
+        @keyframes levelUpPulse {
+            0% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+            }
+            50% {
+                transform: scale(1.1);
+                text-shadow: 0 0 20px rgba(147, 51, 234, 0.8), 0 0 30px rgba(6, 182, 212, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+            }
+        }
+
+        @keyframes xpGain {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-40px) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        @keyframes cardHover {
+            0% {
+                transform: translateY(0) scale(1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3), 0 4px 15px rgba(6, 182, 212, 0.2);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px currentColor;
+            }
+            50% {
+                box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes backgroundShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Enhanced interactive elements */
+        .card:hover {
+            animation: cardHover 0.3s ease-out forwards;
+        }
+
+        .xp-circle {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .xp-circle:hover {
+            animation: glowPulse 1s ease-in-out infinite;
+            transform: scale(1.05);
+        }
+
+        .titan-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .titan-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            transition: transform 0.6s;
+        }
+
+        .titan-card:hover::before {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+
+        .reward-item {
+            position: relative;
+        }
+
+        .reward-item::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #f59e0b, #eab308, #06b6d4, #9333ea);
+            border-radius: 12px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .reward-item.earned::after {
+            opacity: 1;
+            animation: backgroundShift 3s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .leaderboard-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaderboard-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .leaderboard-item:hover::before {
+            left: 100%;
+        }
+
+        /* Floating animation for character */
+        .character-placeholder {
+            animation: characterFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes characterFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Progress bar animation */
+        .progress-fill {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(6, 182, 212, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            background: rgba(34, 197, 94, 0.9);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .notification.warning {
+            background: rgba(245, 158, 11, 0.9);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .notification.level-up {
+            background: rgba(147, 51, 234, 0.9);
+            border-color: rgba(147, 51, 234, 0.3);
+            animation: levelUpPulse 0.5s ease-out;
+        }
+
+        /* XP gain animation */
+        .xp-gain {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #f59e0b;
+            z-index: 1000;
+            pointer-events: none;
+            animation: xpGain 1s ease-out forwards;
+        }
+
+        /* Sparkle effects */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f59e0b;
+            border-radius: 50%;
+            animation: sparkle 1s ease-in-out infinite;
+        }
+
+        /* Enhanced hover effects */
+        .icon:hover {
+            animation: sparkle 0.5s ease-in-out;
+        }
+
+        .nav a:hover {
+            text-shadow: 0 0 10px currentColor;
+            transition: all 0.3s ease;
+        }
+
+        .claim-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .xp-circles {
+                gap: 20px;
+            }
+            
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav {
+                gap: 15px;
+            }
+            
+            .xp-circles {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .rewards-grid {
+                gap: 10px;
+            }
+            
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Animated background -->
+    <div class="particles" id="particles"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
+
     <div class="container">
         <!-- Header -->
         <header class="header">
             <div class="logo">
-                <span class="logo-icon">▶</span>
-                <span class="logo-text">DOPHON</span>
+                ⚡ DOPHON
             </div>
             <nav class="nav">
-                <a href="#" class="nav-link">ИГРА</a>
-                <a href="#" class="nav-link">СООБЩЕСТВО</a>
-                <a href="#" class="nav-link">ГЕРОИ</a>
-                <a href="#" class="nav-link">ПРАВИЛА</a>
-                <a href="#" class="nav-link">НАСТРОЙКИ</a>
+                <a href="#">ИГРА</a>
+                <a href="#">СООБЩЕСТВО</a>
+                <a href="#">ГЕРОИ</a>
+                <a href="#">ПРАВИЛА</a>
+                <a href="#">НАСТРОЙКИ</a>
             </nav>
-            <div class="header-actions">
-                <button class="search-btn">🔍</button>
-                <button class="notification-btn">🔔</button>
-                <button class="messages-btn">💬</button>
-                <button class="cart-btn">🛒<span class="cart-count">3</span></button>
-                <div class="profile-btn">👤</div>
+            <div class="header-icons">
+                <div class="icon">🔍</div>
+                <div class="icon">🔔</div>
+                <div class="icon">🛒</div>
+                <div class="icon">👤</div>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Left Sidebar -->
-            <aside class="left-sidebar">
-                <div class="titan-cards">
-                    <h3>ВАШИ ТИТАНЫ</h3>
-                    <div class="titan-card math">
-                        <div class="titan-icon">🧠</div>
-                        <div class="titan-info">
-                            <span class="titan-level">3L</span>
-                            <span class="titan-points">32</span>
+        <!-- Main content -->
+        <div class="main-grid">
+            <!-- Left sidebar -->
+            <div class="left-sidebar">
+                <div class="card">
+                    <div class="card-title">ВАШИ ТИТАНЫ</div>
+                    <div class="titan-card">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                🧠 <span>Математика</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold;">3L</div>
+                                <div style="font-size: 12px;">2s</div>
+                            </div>
                         </div>
-                        <span class="titan-name">Математика</span>
                     </div>
-                    <div class="titan-card memory">
-                        <div class="titan-icon">🔒</div>
-                        <span class="titan-name">Запоминание</span>
+                    <div class="titan-card locked">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ⚡ <span>Запоминалка</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Center character section -->
+            <div class="character-section">
+                <div class="level-display">УРОВЕНЬ: 3</div>
                 
-                <!-- Game Banners -->
-                <div class="game-banners">
-                    <div class="game-banner math-game">
-                        <img src="assets/images/mathgame.png" alt="Math Game" class="game-banner-img">
+                <div class="xp-circles">
+                    <div class="xp-circle intelligence">
+                        <div class="xp-number">2000</div>
+                        <div class="xp-label">ИНТЕЛЛЕКТ</div>
                     </div>
-                    <div class="game-banner memory-game">
-                        <img src="assets/images/memorygame.png" alt="Memory Game" class="game-banner-img">
+                    <div class="xp-circle creativity">
+                        <div class="xp-number">2000</div>
+                        <div class="xp-label">КРЕАТИВНОСТЬ</div>
                     </div>
                 </div>
-                <button class="enter-btn">ЗАЙТИ</button>
-            </aside>
 
-            <!-- Center Content -->
-            <div class="center-content">
-                <!-- Character Section -->
-                <div class="character-section">
-                    <div class="level-badge">УРОВЕНЬ: 3</div>
-                    <div class="character-container">
-                        <div class="stat-circle left">
-                            <span class="stat-value">2000</span>
+                <div class="character-placeholder">
+                    🦊
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">ЗАМЕТКИ ЗАДАНИЯ ДНЯ</div>
+                </div>
+            </div>
+
+            <!-- Right sidebar -->
+            <div class="right-sidebar">
+                <div class="card">
+                    <div class="card-title">ЦЕЛИ НА МЕСЯЦ</div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox">💡</div>
+                        <span>Изучить новую тему</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox completed">✓</div>
+                        <span>Научиться 10 новым</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox">💄</div>
+                        <span>Сделать макияж</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox">⏱️</div>
+                        <span>Заняться 30 минут</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox">🔍</div>
+                        <span>Найти по новому</span>
+                    </div>
+                </div>
+
+                <!-- Statistics moved here -->
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-title" style="font-size: 14px;">СТАТИСТИКА</div>
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; border: 3px solid #06b6d4; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 10px; color: #06b6d4;">Распределение</div>
+                                <div style="font-size: 9px; opacity: 0.7;">Математика</div>
+                            </div>
                         </div>
-                        <div class="character-avatar">
-                            <img src="assets/images/characterfox.png" alt="Character Fox" class="character-img">
-                        </div>
-                        <div class="stat-circle right">
-                            <span class="stat-value">2000</span>
+                        <div style="margin-top: 10px;">
+                            <div style="font-size: 12px; margin-bottom: 5px;">ОПЫТ: 3540/5000</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%;"></div>
+                            </div>
+                            <div style="font-size: 12px; margin-top: 8px;">ДЕЙТ: 24/30</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks section -->
+        <div class="tasks-section">
+            <div class="tasks-grid">
+                <div class="card">
+                    <div class="card-title">ВАШИ ПЛАНЫ</div>
+                    <div class="task-item">
+                        <div class="goal-checkbox"></div>
+                        <span>Утренняя зарядка</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="goal-checkbox completed">✓</div>
+                        <span>Изучить новое слово</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="goal-checkbox"></div>
+                        <span>Прочитать 10 страниц</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">ПРЕДСТОЯЩИЕ ПЛАНЫ</div>
+                    <div class="task-item">
+                        <div class="goal-checkbox"></div>
+                        <span>Упражнения улучшить</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 14px; margin-bottom: 5px;">Прохождение 70% зоны</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 14px; margin-bottom: 5px;">30 отжиманий (в процессе)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">ЗАДАНИЯ ОТ DOPHON</div>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <div style="background: rgba(147, 51, 234, 0.2); border: 1px solid rgba(147, 51, 234, 0.5); padding: 15px; border-radius: 10px;">
+                        30 отжиманий (в процессе)
+                    </div>
+                    <div style="background: rgba(147, 51, 234, 0.2); border: 1px solid rgba(147, 51, 234, 0.5); padding: 15px; border-radius: 10px;">
+                        30 отжиманий (в процессе)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly rewards -->
+        <div class="weekly-rewards">
+            <h2 style="font-size: 24px; margin-bottom: 20px;">ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ</h2>
+            <div class="rewards-grid">
+                <div class="reward-item earned">🏆</div>
+                <div class="reward-item earned">⭐</div>
+                <div class="reward-item">💎</div>
+                <div class="reward-item">🌟</div>
+                <div class="reward-item">🏅</div>
+                <div class="reward-item">👑</div>
+                <div class="reward-item">🛡️</div>
+                <div class="reward-item">⚔️</div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px; font-size: 12px; margin-bottom: 20px;">
+                <span>GAME</span>
+                <span>СООБЩЕСТВО</span>
+                <span>HERO</span>
+                <span>HERO</span>
+                <span>НАСТРОЙКИ</span>
+            </div>
+            <button class="claim-button">ЗАБРАТЬ</button>
+        </div>
+
+        <!-- Bottom sections -->
+        <div class="bottom-grid">
+            <!-- Leaderboard -->
+            <div class="card">
+                <div class="card-title">ТОП ИГРОКОВ</div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">🎮</div>
+                        <span>Покорители Математики</span>
+                    </div>
+                    <span>1M 01:02</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">🧠</div>
+                        <span>Развитие навыка Мнемоника</span>
+                    </div>
+                    <span>1M 01:02</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">⚡</div>
+                        <span>Виртуозные Мнемоники</span>
+                    </div>
+                    <span>1M 01:02</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">🎯</div>
+                        <span>Развитие навыка Мнемоника</span>
+                    </div>
+                    <span>1M 01:02</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements sections -->
+        <div class="bottom-grid">
+            <div class="card">
+                <div class="card-title">ПОСЛЕДНИЕ ДОСТИЖЕНИЯ</div>
+                <div style="height: 150px; background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(147, 51, 234, 0.1)); border-radius: 10px; margin-bottom: 20px; position: relative; overflow: hidden;">
+                    <svg style="width: 100%; height: 100%; position: absolute;" viewBox="0 0 300 150">
+                        <path d="M 0 120 Q 75 80 150 70 T 300 30" stroke="url(#gradient)" stroke-width="3" fill="none"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#9333ea"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 14px; margin-bottom: 5px;">ОПЫТ: 1940/2000</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 97%;"></div>
+                    </div>
+                    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        <span style="color: #9333ea;">⭐</span>
+                        <span style="font-size: 12px;">Прохождение игры головоломки (Завтра)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">ПОСЛЕДНИЕ ДОСТИЖЕНИЯ</div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">🏆</div>
+                        <div>
+                            <div>Покорители Алгебраики</div>
+                            <div style="font-size: 12px; opacity: 0.7;">1</div>
+                        </div>
+                    </div>
+                    <span>1</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">🎯</div>
+                        <div>
+                            <div>Прохождение Мнемоники</div>
+                            <div style="font-size: 12px; opacity: 0.7;">1M 01:02</div>
+                        </div>
+                    </div>
+                    <span>2</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">👤</div>
+                        <div>
+                            <div>Alex</div>
+                            <div style="font-size: 12px; opacity: 0.7;">1M 01:02</div>
+                        </div>
+                    </div>
+                    <span>2</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="leaderboard-avatar">⭐</div>
+                        <div>
+                            <div>Расширенные Задания</div>
+                            <div style="font-size: 12px; opacity: 0.7;">1M 01:02</div>
+                        </div>
+                    </div>
+                    <span>3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">О НАС</a>
+                <a href="#">ПОДДЕРЖКА</a>
+                <a href="#">УСЛОВИЯ/КОНФИДЕНЦИАЛЬНОСТЬ</a>
+                <a href="#">УСЛОВИЯ</a>
+                <a href="#">УСЛОВИЯ И РАЗРЕШЕНИЯ</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Add click interactions
+        function addInteractions() {
+            // Task completion
+            document.querySelectorAll('.task-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const checkbox = this.querySelector('.goal-checkbox');
+                    const isCompleted = checkbox.classList.contains('completed');
                     
-                    <!-- Stats Grid -->
-                    <div class="stats-grid">
-                        <div class="stat-column left">
-                            <div class="stat-item">
-                                <span class="stat-icon">🧠</span>
-                                <span class="stat-label">ИНТЕЛЛЕКТ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">⚡</span>
-                                <span class="stat-label">ВЫНОСЛИВОСТЬ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">🎯</span>
-                                <span class="stat-label">НОВИЗНА</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">💎</span>
-                                <span class="stat-label">НАВЫКИ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                        </div>
-                        <div class="stat-column right">
-                            <div class="stat-item">
-                                <span class="stat-icon">🎮</span>
-                                <span class="stat-label">ИГРЫ СЕГОДНЯ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">⭐</span>
-                                <span class="stat-label">РЕЗУЛЬТАТ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">📊</span>
-                                <span class="stat-label">РЕЙТИНГ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-icon">🏆</span>
-                                <span class="stat-label">ДОСТИЖЕНИЯ</span>
-                                <span class="stat-number">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    checkbox.classList.toggle('completed');
+                    if (!isCompleted) {
+                        checkbox.innerHTML = '✓';
+                        gainXP(50);
+                        showNotification('Задача выполнена! +50 XP', 'success');
+                    } else {
+                        checkbox.innerHTML = '';
+                        showNotification('Задача отменена', 'warning');
+                    }
+                });
+            });
 
-                <!-- Goals Section -->
-                <div class="goals-section">
-                    <h3>ЗАМЕТКИ ЗАДАНИЯ ДНЯ</h3>
-                    <div class="goals-content">
-                        <div class="goals-left">
-                            <div class="goal-category">
-                                <h4>ВАШИ ПЛАНЫ</h4>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal1">
-                                    <label for="goal1">Утренняя зарядка</label>
-                                </div>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal2">
-                                    <label for="goal2">Изучить формулы</label>
-                                </div>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal3">
-                                    <label for="goal3">Решить задачи</label>
-                                </div>
-                            </div>
-                            <div class="dophon-tasks">
-                                <h4>ЗАДАЧИ ОТ DOPHON</h4>
-                            </div>
-                        </div>
-                        <div class="goals-right">
-                            <div class="goal-category">
-                                <h4>ПРЕДЛАГАЕМЫЕ ПЛАНЫ</h4>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal4">
-                                    <label for="goal4">Прочитать 10кр книг</label>
-                                </div>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal5">
-                                    <label for="goal5">30 отжиманий (3 подхода)</label>
-                                </div>
-                                <div class="goal-item">
-                                    <input type="checkbox" id="goal6">
-                                    <label for="goal6">30 отжиманий (3 подхода)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            // Goal completion
+            document.querySelectorAll('.goal-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const checkbox = this.querySelector('.goal-checkbox');
+                    if (!checkbox.innerHTML.includes('✓')) {
+                        checkbox.classList.toggle('completed');
+                        if (checkbox.classList.contains('completed')) {
+                            checkbox.innerHTML = '✓';
+                            showNotification('Цель выполнена!');
+                        } else {
+                            checkbox.innerHTML = checkbox.innerHTML.replace('✓', '');
+                        }
+                    }
+                });
+            });
 
-                <!-- Achievements Section -->
-                <div class="achievements-section">
-                    <h3>ЕЖЕНЕДЕЛЬНЫЕ НАГРАДЫ</h3>
-                    <div class="achievements-grid">
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🏆</div>
-                            <span class="achievement-day">День 1</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">⭐</div>
-                            <span class="achievement-day">День 2</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">💎</div>
-                            <span class="achievement-day">День 3</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🎯</div>
-                            <span class="achievement-day">День 4</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🏅</div>
-                            <span class="achievement-day">День 5</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🏆</div>
-                            <span class="achievement-day">День 6</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🎖️</div>
-                            <span class="achievement-day">День 7</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🛡️</div>
-                            <span class="achievement-day">День 7</span>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon">🏆</div>
-                            <span class="achievement-day">День 7</span>
-                        </div>
-                        <div class="achievement-item claim-btn">
-                            <span>ЗАБРАТЬ</span>
-                        </div>
-                    </div>
-                    <div class="achievement-categories">
-                        <span class="category">GAME</span>
-                        <span class="category">СООБЩЕСТВО</span>
-                        <span class="category">HERO</span>
-                        <span class="category">HERO</span>
-                        <span class="category">НАСТРОЙКИ</span>
-                    </div>
-                </div>
-            </div>
+            // Titan cards
+            document.querySelectorAll('.titan-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('locked')) {
+                        showNotification('Игра будет доступна завтра!', 'warning');
+                    } else {
+                        gainXP(100);
+                        showNotification('Отличная игра в математику! +100 XP', 'success');
+                    }
+                });
+            });
 
-            <!-- Right Sidebar -->
-            <aside class="right-sidebar">
-                <div class="goals-month">
-                    <h3>ЦЕЛИ НА МЕСЯЦ</h3>
-                    <div class="goal-progress">
-                        <div class="goal-item-right">
-                            <span class="goal-icon">👤</span>
-                            <span class="goal-text">Изучить анатомию тела</span>
-                        </div>
-                        <div class="goal-item-right">
-                            <span class="goal-icon">🎯</span>
-                            <span class="goal-text">Научиться 10 новых</span>
-                        </div>
-                        <div class="goal-item-right">
-                            <span class="goal-icon">👤</span>
-                            <span class="goal-text">Освоить навыки</span>
-                        </div>
-                        <div class="goal-item-right">
-                            <span class="goal-icon">🎯</span>
-                            <span class="goal-text">Заработать 50 очков</span>
-                        </div>
-                        <div class="goal-item-right">
-                            <span class="goal-icon">👤</span>
-                            <span class="goal-text">Изучить 50 новых</span>
-                        </div>
-                    </div>
-                </div>
-            <!-- Progress Stats -->
-            <div class="progress-stats moved-progress-stats">
-                <h3>ВАША СТАТИСТИКА ПРОГРЕССА</h3>
-                <div class="stats-content">
-                    <div class="chart-container">
-                        <canvas id="progressChart" width="300" height="150"></canvas>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress-circle">
-                            <div class="circle-content">
-                                <span class="circle-title">Распределение</span>
-                                <span class="circle-subtitle">Математика</span>
-                            </div>
-                        </div>
-                        <div class="progress-details">
-                            <div class="progress-item">
-                                <span class="progress-label">ОПЫТ: 3540/3000</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 85%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </aside>
-        </main>
+            // Claim rewards
+            document.querySelector('.claim-button').addEventListener('click', function() {
+                gainXP(200);
+                showNotification('Награды получены! +200 XP', 'success');
+                
+                // Add sparkle effects
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => createSparkle(), i * 200);
+                }
+            });
+        }
 
-        <!-- Bottom Section -->
-        <section class="bottom-section">
-            <!-- Top Games -->
-            <div class="top-games">
-                <h3>ТОП ИГРОКОВ</h3>
-                <div class="games-list">
-                    <div class="game-item">
-                        <div class="game-icon purple">🧠</div>
-                        <div class="game-info">
-                            <span class="game-title">Прокачиваем Математика</span>
-                            <span class="game-score">1м 04.027</span>
-                        </div>
-                    </div>
-                    <div class="game-item">
-                        <div class="game-icon yellow">⚡</div>
-                        <div class="game-info">
-                            <span class="game-title">Быстрота мысли</span>
-                            <span class="game-score">1м 04.027</span>
-                        </div>
-                    </div>
-                    <div class="game-item">
-                        <div class="game-icon purple">🧠</div>
-                        <div class="game-info">
-                            <span class="game-title">Воспроизведение Навыков</span>
-                            <span class="game-score">1м 04.027</span>
-                        </div>
-                    </div>
-                    <div class="game-item">
-                        <div class="game-icon orange">🎯</div>
-                        <div class="game-info">
-                            <span class="game-title">Развитие навыков Навыков</span>
-                            <span class="game-score">1м 04.027</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        // Enhanced notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-        <!-- Recent Achievements -->
-        <section class="recent-achievements">
-            <div class="achievement-left">
-                <h3>ПОСЛЕДНИЕ ДОСТИЖЕНИЯ</h3>
-                <div class="achievement-chart">
-                    <canvas id="achievementChart" width="200" height="100"></canvas>
-                </div>
-                <div class="achievement-progress">
-                    <span class="achievement-label">ОПЫТ: 1940/2000</span>
-                    <div class="achievement-bar">
-                        <div class="achievement-fill" style="width: 97%"></div>
-                    </div>
-                </div>
-                <div class="achievement-reward">
-                    <div class="reward-icon">🎁</div>
-                    <span class="reward-text">Ежедневная награда: 500 XP</span>
-                </div>
-            </div>
-            <div class="achievement-right">
-                <h3>ЛЕНТА АКТИВНОСТИ</h3>
-                <div class="achievement-list">
-                    <div class="achievement-entry">
-                        <div class="achievement-avatar">👤</div>
-                        <div class="achievement-details">
-                            <span class="achievement-name">Вы получили достижение 
+            // Trigger animation
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            // Remove notification
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // XP gain animation
+        function showXPGain(amount) {
+            const xpGain = document.createElement('div');
+            xpGain.className = 'xp-gain';
+            xpGain.textContent = `+${amount} XP`;
+            document.body.appendChild(xpGain);
+
+            setTimeout(() => {
+                if (document.body.contains(xpGain)) {
+                    document.body.removeChild(xpGain);
+                }
+            }, 1000);
+        }
+
+        // Level up animation
+        function showLevelUp() {
+            const levelDisplay = document.querySelector('.level-display');
+            levelDisplay.style.animation = 'levelUpPulse 1s ease-out';
+            
+            // Create sparkle effects
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createSparkle();
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                levelDisplay.style.animation = '';
+            }, 1000);
+        }
+
+        // Create sparkle effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => {
+                if (document.body.contains(sparkle)) {
+                    document.body.removeChild(sparkle);
+                }
+            }, 1000);
+        }
+
+        // Enhanced progress bar animation
+        function animateProgressBar(element, targetWidth) {
+            let currentWidth = 0;
+            const increment = targetWidth / 50;
+            
+            const animate = () => {
+                if (currentWidth < targetWidth) {
+                    currentWidth += increment;
+                    element.style.width = Math.min(currentWidth, targetWidth) + '%';
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+
+        // Player stats
+        let playerStats = {
+            level: 3,
+            xp: 2000,
+            maxXP: 3000,
+            intelligence: 2000,
+            creativity: 2000
+        };
+
+        // Update XP and level
+        function gainXP(amount) {
+            playerStats.xp += amount;
+            showXPGain(amount);
+            
+            if (playerStats.xp >= playerStats.maxXP) {
+                playerStats.level++;
+                playerStats.xp = playerStats.xp - playerStats.maxXP;
+                playerStats.maxXP += 500;
+                
+                showLevelUp();
+                showNotification(`Поздравляем! Вы достигли ${playerStats.level} уровня!`, 'level-up');
+                
+                // Update display
+                document.querySelector('.level-display').textContent = `УРОВЕНЬ: ${playerStats.level}`;
+            }
+            
+            updateXPDisplay();
+        }
+
+        // Update XP display
+        function updateXPDisplay() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const currentWidth = (playerStats.xp / playerStats.maxXP) * 100;
+                animateProgressBar(bar, currentWidth);
+            });
+        }
+
+        // Add CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            addInteractions();
+        });
+    </script>
+</body>
+</html>
