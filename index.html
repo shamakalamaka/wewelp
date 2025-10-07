@@ -1064,23 +1064,12 @@
             <aside class="left-sidebar">
                 <div class="card">
                     <div class="card-title">Ваши Титаны</div>
-                    <div class="titan-card">
-                        <div class="titan-icon">
-                            <span style="font-size: 24px;">🧠</span>
-                            <span style="font-size: 24px;">🧠</span>
-                        </div>
-                        <div class="titan-label">Математика</div>
-                        <div class="titan-stats">
-                            <span>3L</span>
-                            <span>82</span>
-                        </div>
+                    <div class="titan-card" style="padding: 0; overflow: hidden;">
+                        <img src="mathgame.png" alt="Математика" style="width: 100%; height: auto; display: block; border-radius: 10px;" />
                     </div>
-                    <div class="titan-card locked">
-                        <div class="lock-icon">🔒</div>
-                        <div class="titan-icon">
-                            <span style="font-size: 24px;">🧠</span>
-                        </div>
-                        <div class="titan-label">Запоминалка</div>
+                    <div class="titan-card locked" style="padding: 0; overflow: hidden; position: relative;">
+                        <img src="memorygame.png" alt="Запоминалка" style="width: 100%; height: auto; display: block; border-radius: 10px;" />
+                        <div class="lock-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; text-shadow: 0 0 10px rgba(0,0,0,0.8);">🔒</div>
                     </div>
                     <div class="action-btn">Завтра</div>
                 </div>
@@ -1097,40 +1086,7 @@
                     </div>
                     
                     <div class="character-avatar">
-                        <svg class="character-img" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Fox character -->
-                            <defs>
-                                <linearGradient id="foxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ff8c42;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Body -->
-                            <ellipse cx="100" cy="180" rx="50" ry="60" fill="url(#foxGradient)"/>
-                            <!-- Head -->
-                            <circle cx="100" cy="100" r="45" fill="url(#foxGradient)"/>
-                            <!-- Ears -->
-                            <path d="M 70 80 L 60 40 L 85 70 Z" fill="url(#foxGradient)"/>
-                            <path d="M 130 80 L 140 40 L 115 70 Z" fill="url(#foxGradient)"/>
-                            <!-- Face white -->
-                            <ellipse cx="100" cy="110" rx="30" ry="25" fill="#fff"/>
-                            <!-- Eyes -->
-                            <circle cx="90" cy="100" r="6" fill="#000"/>
-                            <circle cx="110" cy="100" r="6" fill="#000"/>
-                            <!-- Nose -->
-                            <circle cx="100" cy="115" r="4" fill="#000"/>
-                            <!-- Crypto coin -->
-                            <circle cx="100" cy="160" r="15" fill="#f59e0b"/>
-                            <text x="100" y="167" text-anchor="middle" fill="#000" font-size="16" font-weight="bold">₿</text>
-                            <!-- Arms -->
-                            <ellipse cx="65" cy="170" rx="12" ry="30" fill="url(#foxGradient)" transform="rotate(-20 65 170)"/>
-                            <ellipse cx="135" cy="170" rx="12" ry="30" fill="url(#foxGradient)" transform="rotate(20 135 170)"/>
-                            <!-- Legs -->
-                            <ellipse cx="85" cy="230" rx="12" ry="25" fill="url(#foxGradient)"/>
-                            <ellipse cx="115" cy="230" rx="12" ry="25" fill="url(#foxGradient)"/>
-                            <!-- Tail -->
-                            <path d="M 50 200 Q 20 180 30 150" stroke="url(#foxGradient)" stroke-width="20" fill="none"/>
-                        </svg>
+                        <img src="characterfox.png" class="character-img" alt="Fox Character" />
                         <div class="crystal-platform"></div>
                     </div>
                     
