@@ -1869,6 +1869,7 @@
                                 id="mathAnswerInput" 
                                 placeholder="?" 
                                 autocomplete="off"
+                                autofocus
                             />
                             <div class="math-feedback-message" id="mathFeedbackMessage"></div>
                         </div>
@@ -1969,11 +1970,18 @@
 
         function closeMathGame() {
             if (mathTimerInterval) {
-                if (confirm('Вы уверены, что хотите закрыть игру? Прогресс будет потерян.')) {
-                    document.getElementById('mathGameModal').classList.remove('active');
-                    stopMathTimer();
-                    resetMathGame();
-                }
+                showMathNotification(
+                    'Подтвердите действие',
+                    'Вы уверены, что хотите закрыть игру? Прогресс будет потерян.',
+                    function() {
+                        document.getElementById('mathGameModal').classList.remove('active');
+                        stopMathTimer();
+                        resetMathGame();
+                    },
+                    function() {
+                        // Do nothing on cancel
+                    }
+                );
             } else {
                 document.getElementById('mathGameModal').classList.remove('active');
                 resetMathGame();
@@ -1994,7 +2002,7 @@
 
         function generateMathQuestions() {
             mathQuestions = [];
-            const operations = ['+', '-', '*', '/'];
+            const operations = ['+', '-', '*', ':'];
             
             for (let i = 0; i < 90; i++) {
                 const operation = operations[Math.floor(Math.random() * operations.length)];
@@ -2016,7 +2024,7 @@
                         num2 = Math.floor(Math.random() * 12) + 2;
                         answer = num1 * num2;
                         break;
-                    case '/':
+                    case ':':
                         num2 = Math.floor(Math.random() * 11) + 2;
                         answer = Math.floor(Math.random() * 15) + 2;
                         num1 = num2 * answer;
@@ -2085,7 +2093,16 @@
 
         function displayMathQuestion() {
             const question = mathQuestions[mathCurrentQuestionIndex];
-            document.getElementById('mathQuestionText').textContent = question.question;
+            const questionParts = question.question.split(' ');
+            const questionElement = document.getElementById('mathQuestionText');
+            
+            // Create properly formatted question with centered operators
+            questionElement.innerHTML = `
+                <span>${questionParts[0]}</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 40px;">${questionParts[1]}</span>
+                <span>${questionParts[2]}</span>
+            `;
+            
             document.getElementById('mathCurrentQuestion').textContent = mathCurrentQuestionIndex + 1;
             document.getElementById('mathAnswerInput').value = '';
             document.getElementById('mathFeedbackMessage').textContent = '';
@@ -2192,3 +2209,110 @@
     </script>
 </body>
 </html>
+
+        // Show custom notification for math game
+        function showMathNotification(title, message, onConfirm, onCancel) {
+            const overlay = document.createElement('div');
+            overlay.className = 'notification-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease-in-out;
+            `;
+            
+            overlay.innerHTML = `
+                <div class="notification-modal" style="
+                    background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(30, 15, 45, 0.95));
+                    border-radius: 15px;
+                    padding: 30px;
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                    border: 2px solid rgba(147, 51, 234, 0.3);
+                    box-shadow: 0 20px 60px rgba(147, 51, 234, 0.4);
+                    animation: slideIn 0.3s ease-out;
+                ">
+                    <div style="
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: #9333ea;
+                        margin-bottom: 15px;
+                        text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+                    ">${title}</div>
+                    <div style="
+                        font-size: 18px;
+                        color: rgba(255, 255, 255, 0.9);
+                        margin-bottom: 25px;
+                        line-height: 1.4;
+                    ">${message}</div>
+                    <div style="
+                        display: flex;
+                        gap: 15px;
+                        justify-content: center;
+                    ">
+                        <button onclick="closeMathNotification()" style="
+                            padding: 12px 25px;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            min-width: 80px;
+                            background: rgba(255, 255, 255, 0.1);
+                            color: white;
+                            border: 2px solid rgba(255, 255, 255, 0.2);
+                        ">Отмена</button>
+                        <button onclick="confirmMathNotification()" style="
+                            padding: 12px 25px;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            min-width: 80px;
+                            background: linear-gradient(135deg, #ef4444, #dc2626);
+                            color: white;
+                        ">OK</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Store callbacks
+            window.mathNotificationCallbacks = { onConfirm, onCancel };
+        }
+
+        // Close math notification
+        function closeMathNotification() {
+            const overlay = document.querySelector('.notification-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+            if (window.mathNotificationCallbacks && window.mathNotificationCallbacks.onCancel) {
+                window.mathNotificationCallbacks.onCancel();
+            }
+            window.mathNotificationCallbacks = null;
+        }
+
+        // Confirm math notification
+        function confirmMathNotification() {
+            const overlay = document.querySelector('.notification-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+            if (window.mathNotificationCallbacks && window.mathNotificationCallbacks.onConfirm) {
+                window.mathNotificationCallbacks.onConfirm();
+            }
+            window.mathNotificationCallbacks = null;
+        }
