@@ -1419,35 +1419,140 @@
             }
         }
 
+          /* Custom Confirmation Modal */
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .confirmation-content {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(30, 15, 45, 0.95));
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(147, 51, 234, 0.4),
+                        0 0 100px rgba(6, 182, 212, 0.2);
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .confirmation-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #9333ea;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+
+        .confirmation-message {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+            min-width: 120px;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.6);
+        }
+
+        .cancel-btn {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+            min-width: 120px;
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(107, 114, 128, 0.6);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .math-game-container {
+            .game-container {
                 padding: 20px;
             }
 
-            .math-game-content {
+            .game-content {
                 flex-direction: column;
             }
 
-            .math-leaderboard {
+            .leaderboard {
                 width: 100%;
                 max-height: 300px;
             }
 
-            .math-question-text {
+            .question-text {
                 font-size: 36px;
             }
 
-            .math-answer-input {
+            .answer-input {
                 font-size: 24px;
             }
 
-            .math-timer {
+            .timer {
                 font-size: 24px;
             }
 
-            .math-start-title, .math-end-title {
+            .start-title, .end-title {
                 font-size: 32px;
             }
+
+            .confirmation-content {
+                padding: 30px 20px;
+            }
+
+            .confirmation-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .confirm-btn, .cancel-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }  }
         }
     </style>
 </head>
@@ -1892,6 +1997,21 @@
         </div>
     </div>
 
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmationModal" class="confirmation-modal" style="display: none;">
+        <div class="confirmation-content">
+            <div class="confirmation-title">Подтвердите действие</div>
+            <div class="confirmation-message">
+                Вы уверены, что хотите закрыть игру?<br>
+                Прогресс будет потерян.
+            </div>
+            <div class="confirmation-buttons">
+                <button class="cancel-btn" onclick="hideConfirmationModal()">Отмена</button>
+                <button class="confirm-btn" onclick="confirmCloseMathGame()">Закрыть игру</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Task management functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -1967,15 +2087,32 @@
             loadMathLeaderboard();
         }
 
+        // Show custom confirmation modal for math game
+        function showConfirmationModal() {
+            document.getElementById("confirmationModal").style.display = "flex";
+        }
+
+        // Hide confirmation modal for math game
+        function hideConfirmationModal() {
+            document.getElementById("confirmationModal").style.display = "none";
+        }
+
+        // Confirm close math game
+        function confirmCloseMathGame() {
+            hideConfirmationModal();
+            document.getElementById("mathGameModal").classList.remove("active");
+            stopMathTimer();
+            resetMathGame();
+        }
+
         function closeMathGame() {
-            if (mathTimerInterval) {
-                if (confirm('Вы уверены, что хотите закрыть игру? Прогресс будет потерян.')) {
-                    document.getElementById('mathGameModal').classList.remove('active');
-                    stopMathTimer();
-                    resetMathGame();
-                }
+            // Check if math game is in progress (mathGameScreen is visible)
+            const mathGameScreen = document.getElementById("mathGameScreen");
+            if (mathGameScreen && mathGameScreen.style.display !== "none") {
+                showConfirmationModal();
             } else {
-                document.getElementById('mathGameModal').classList.remove('active');
+                // If not in active game, close immediately
+                document.getElementById("mathGameModal").classList.remove("active");
                 resetMathGame();
             }
         }
