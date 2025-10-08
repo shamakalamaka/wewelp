@@ -1968,16 +1968,9 @@
         }
 
         function closeMathGame() {
-            if (mathTimerInterval) {
-                if (confirm('Вы уверены, что хотите закрыть игру? Прогресс будет потерян.')) {
-                    document.getElementById('mathGameModal').classList.remove('active');
-                    stopMathTimer();
-                    resetMathGame();
-                }
-            } else {
-                document.getElementById('mathGameModal').classList.remove('active');
-                resetMathGame();
-            }
+            document.getElementById('mathGameModal').classList.remove('active');
+            stopMathTimer();
+            resetMathGame();
         }
 
         function resetMathGame() {
