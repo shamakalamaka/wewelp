@@ -820,15 +820,33 @@
                     <div class="notification-title">${title}</div>
                     <div class="notification-message">${message}</div>
                     <div class="notification-buttons">
-                        <button class="notification-btn cancel" onclick="closeNotification()">Отмена</button>
-                        <button class="notification-btn confirm" onclick="confirmNotification()">OK</button>
+                        <button class="notification-btn cancel">Отмена</button>
+                        <button class="notification-btn confirm">OK</button>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(overlay);
             
-            // Store callbacks
+            // Add event listeners to buttons
+            const cancelBtn = overlay.querySelector('.notification-btn.cancel');
+            const confirmBtn = overlay.querySelector('.notification-btn.confirm');
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    overlay.remove();
+                    if (onCancel) onCancel();
+                });
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    overlay.remove();
+                    if (onConfirm) onConfirm();
+                });
+            }
+            
+            // Store callbacks for compatibility
             window.notificationCallbacks = { onConfirm, onCancel };
         }
 
