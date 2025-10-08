@@ -165,6 +165,11 @@
             margin-bottom: 20px;
             z-index: 1;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .answer-input {
@@ -409,6 +414,86 @@
             background: rgba(245, 158, 11, 0.7);
         }
 
+        /* Custom notification modal */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .notification-modal {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(30, 15, 45, 0.95));
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid rgba(147, 51, 234, 0.3);
+            box-shadow: 0 20px 60px rgba(147, 51, 234, 0.4);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #9333ea;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+        }
+
+        .notification-message {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .notification-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+
+        .notification-btn.confirm {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .notification-btn.confirm:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+        }
+
+        .notification-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .game-container {
@@ -516,7 +601,7 @@
         // Generate 90 random math questions
         function generateQuestions() {
             questions = [];
-            const operations = ['+', '-', '*', '/'];
+            const operations = ['+', '-', '*', ':'];
             
             for (let i = 0; i < 90; i++) {
                 const operation = operations[Math.floor(Math.random() * operations.length)];
@@ -538,7 +623,7 @@
                         num2 = Math.floor(Math.random() * 12) + 2;
                         answer = num1 * num2;
                         break;
-                    case '/':
+                    case ':':
                         num2 = Math.floor(Math.random() * 11) + 2;
                         answer = Math.floor(Math.random() * 15) + 2;
                         num1 = num2 * answer;
@@ -615,7 +700,16 @@
         // Display current question
         function displayQuestion() {
             const question = questions[currentQuestionIndex];
-            document.getElementById('questionText').textContent = question.question;
+            const questionParts = question.question.split(' ');
+            const questionElement = document.getElementById('questionText');
+            
+            // Create properly formatted question with centered operators
+            questionElement.innerHTML = `
+                <span>${questionParts[0]}</span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 40px;">${questionParts[1]}</span>
+                <span>${questionParts[2]}</span>
+            `;
+            
             document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
             document.getElementById('answerInput').value = '';
             document.getElementById('feedbackMessage').textContent = '';
@@ -716,15 +810,64 @@
             document.getElementById('startScreen').style.display = 'block';
         }
 
+        // Show custom notification
+        function showNotification(title, message, onConfirm, onCancel) {
+            const overlay = document.createElement('div');
+            overlay.className = 'notification-overlay';
+            
+            overlay.innerHTML = `
+                <div class="notification-modal">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                    <div class="notification-buttons">
+                        <button class="notification-btn cancel" onclick="closeNotification()">Отмена</button>
+                        <button class="notification-btn confirm" onclick="confirmNotification()">OK</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Store callbacks
+            window.notificationCallbacks = { onConfirm, onCancel };
+        }
+
+        // Close notification
+        function closeNotification() {
+            const overlay = document.querySelector('.notification-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+            if (window.notificationCallbacks && window.notificationCallbacks.onCancel) {
+                window.notificationCallbacks.onCancel();
+            }
+            window.notificationCallbacks = null;
+        }
+
+        // Confirm notification
+        function confirmNotification() {
+            const overlay = document.querySelector('.notification-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+            if (window.notificationCallbacks && window.notificationCallbacks.onConfirm) {
+                window.notificationCallbacks.onConfirm();
+            }
+            window.notificationCallbacks = null;
+        }
+
         // Close game
         function closeGame() {
-            if (confirm('Вы уверены, что хотите закрыть игру?')) {
-                window.close();
-                // If window.close() doesn't work (e.g., not opened by script), redirect back
-                setTimeout(() => {
+            showNotification(
+                'Подтвердите действие',
+                'Вы уверены, что хотите закрыть игру? Прогресс будет потерян.',
+                function() {
                     window.location.href = 'index.html';
-                }, 100);
-            }
+                },
+                function() {
+                    // Do nothing on cancel
+                }
+            );
         }
 
         // Handle Enter key
