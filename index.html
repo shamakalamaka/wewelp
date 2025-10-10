@@ -433,6 +433,30 @@
         /* Tasks Section */
         .tasks-section {
             width: 100%;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.25) 0%, rgba(6, 182, 212, 0.25) 50%, rgba(236, 72, 153, 0.25) 100%) !important;
+            border: 2px solid rgba(147, 51, 234, 0.4) !important;
+            box-shadow: 0 0 40px rgba(147, 51, 234, 0.3), 
+                        0 0 60px rgba(6, 182, 212, 0.2),
+                        inset 0 0 30px rgba(147, 51, 234, 0.1) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tasks-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, transparent 70%);
+            animation: tasksPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes tasksPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
         }
 
         .tasks-header {
@@ -441,6 +465,43 @@
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tasks-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(147, 51, 234, 0.6);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            border-color: #9333ea;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
         }
 
         .tasks-tabs {
@@ -476,12 +537,120 @@
             padding: 10px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
+            cursor: grab;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
         }
 
         .task-item:hover {
             background: rgba(0, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+
+        .task-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .task-item.drag-over {
+            border-top: 3px solid #06b6d4;
+        }
+
+        .task-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: #9333ea;
+            min-width: 35px;
+            text-align: center;
+            display: none;
+        }
+
+        .task-number.visible {
+            display: block;
+        }
+
+        .task-timer-controls {
+            display: none;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .task-timer-controls.visible {
+            display: flex;
+        }
+
+        .task-time-input {
+            width: 50px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: white;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .task-timer-display {
+            font-size: 12px;
+            font-weight: 600;
+            color: #f59e0b;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .timer-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .timer-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .timer-btn.start {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+        }
+
+        .timer-btn.pause {
+            background: linear-gradient(135deg, #f59e0b, #fb923c);
+        }
+
+        .timer-btn.stop {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .xp-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #9333ea, #06b6d4);
+            padding: 30px 50px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(147, 51, 234, 0.6);
+            animation: xpPopup 2s ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes xpPopup {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            10% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            90% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
         }
 
         .task-checkbox {
@@ -1626,36 +1795,79 @@
                 </div>
 
                 <div class="tasks-section card">
-                    <div class="tasks-header">Заметки задания дня</div>
+                    <div class="tasks-header">Задания/Заметки на сегодня</div>
+                    
+                    <!-- Control buttons -->
+                    <div class="tasks-controls">
+                        <button class="control-btn" id="toggleNumbering" onclick="toggleNumbering()">
+                            📊 Нумерация
+                        </button>
+                        <button class="control-btn" id="toggleTimer" onclick="toggleTimerMode()">
+                            ⏱️ Таймер
+                        </button>
+                    </div>
+                    
                     <div class="tasks-tabs">
                         <div class="task-tab active">Ваши Титаны</div>
                         <div class="task-tab">Предлагаемые Планы</div>
                     </div>
                     
                     <!-- Input field for new tasks -->
-                    <div style="margin-bottom: 15px;">
+                    <div style="margin-bottom: 15px; position: relative; z-index: 1;">
                         <input type="text" id="newTaskInput" placeholder="Добавить новую задачу..." style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; font-size: 13px;" />
                     </div>
                     
                     <div class="tasks-grid" id="tasksGrid">
-                        <div class="task-item">
+                        <div class="task-item" draggable="true">
+                            <div class="task-number">1/4</div>
                             <div class="task-checkbox"></div>
                             <div class="task-text">Упражнения уйбор</div>
+                            <div class="task-timer-controls">
+                                <input type="number" class="task-time-input" placeholder="мин" value="60" min="1" />
+                                <div class="task-timer-display">60:00</div>
+                                <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                                <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                                <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+                            </div>
                         </div>
-                        <div class="task-item">
+                        <div class="task-item" draggable="true">
+                            <div class="task-number">2/4</div>
                             <div class="task-checkbox"></div>
                             <div class="task-text">Прочитать Твіто зона</div>
+                            <div class="task-timer-controls">
+                                <input type="number" class="task-time-input" placeholder="мин" value="30" min="1" />
+                                <div class="task-timer-display">30:00</div>
+                                <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                                <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                                <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+                            </div>
                         </div>
-                        <div class="task-item">
+                        <div class="task-item" draggable="true">
+                            <div class="task-number">3/4</div>
                             <div class="task-checkbox"></div>
                             <div class="task-text">Пожалуй фруктов</div>
+                            <div class="task-timer-controls">
+                                <input type="number" class="task-time-input" placeholder="мин" value="15" min="1" />
+                                <div class="task-timer-display">15:00</div>
+                                <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                                <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                                <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+                            </div>
                         </div>
-                        <div class="task-item">
+                        <div class="task-item" draggable="true">
+                            <div class="task-number">4/4</div>
                             <div class="task-checkbox"></div>
                             <div class="task-text">30 отжиманий (в процессе)</div>
+                            <div class="task-timer-controls">
+                                <input type="number" class="task-time-input" placeholder="мин" value="10" min="1" />
+                                <div class="task-timer-display">10:00</div>
+                                <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                                <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                                <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+                            </div>
                         </div>
                     </div>
-                    <div style="margin-top: 15px;">
+                    <div style="margin-top: 15px; position: relative; z-index: 1;">
                         <div class="tasks-header">Задания от DOPHON</div>
                         <div class="task-item">
                             <div class="task-checkbox checked"></div>
@@ -2014,6 +2226,11 @@
 
     <script>
         // Task management functionality
+        let numberingEnabled = false;
+        let timerEnabled = false;
+        let taskTimers = new Map();
+        let currentXP = { intelligence: 2000, creativity: 2000 };
+
         document.addEventListener('DOMContentLoaded', function() {
             const newTaskInput = document.getElementById('newTaskInput');
             const tasksGrid = document.getElementById('tasksGrid');
@@ -2038,9 +2255,19 @@
             function addNewTask(taskText) {
                 const taskItem = document.createElement('div');
                 taskItem.className = 'task-item';
+                taskItem.draggable = true;
+                const taskCount = tasksGrid.querySelectorAll('.task-item').length + 1;
                 taskItem.innerHTML = `
+                    <div class="task-number">${taskCount}/${taskCount}</div>
                     <div class="task-checkbox"></div>
                     <div class="task-text">${taskText}</div>
+                    <div class="task-timer-controls">
+                        <input type="number" class="task-time-input" placeholder="мин" value="30" min="1" />
+                        <div class="task-timer-display">30:00</div>
+                        <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                        <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                        <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+                    </div>
                 `;
                 tasksGrid.appendChild(taskItem);
                 
@@ -2050,6 +2277,12 @@
                 checkbox.addEventListener('click', function() {
                     toggleTaskCompletion(this, textElement);
                 });
+
+                // Add drag handlers
+                setupDragAndDrop(taskItem);
+                
+                // Update numbering
+                updateTaskNumbers();
             }
 
             // Function to toggle task completion
@@ -2062,6 +2295,9 @@
                     textElement.style.textDecoration = 'none';
                     textElement.style.opacity = '1';
                 }
+                
+                // Check completion percentage and award XP
+                checkTaskCompletionAndAwardXP();
             }
 
             // Add click handlers to existing checkboxes
@@ -2073,7 +2309,224 @@
                     toggleTaskCompletion(this, textElement);
                 });
             });
+
+            // Setup drag and drop for existing tasks
+            document.querySelectorAll('#tasksGrid .task-item').forEach(setupDragAndDrop);
         });
+
+        // Toggle numbering
+        function toggleNumbering() {
+            numberingEnabled = !numberingEnabled;
+            const btn = document.getElementById('toggleNumbering');
+            const numbers = document.querySelectorAll('.task-number');
+            
+            if (numberingEnabled) {
+                btn.classList.add('active');
+                numbers.forEach(num => num.classList.add('visible'));
+            } else {
+                btn.classList.remove('active');
+                numbers.forEach(num => num.classList.remove('visible'));
+            }
+        }
+
+        // Toggle timer mode
+        function toggleTimerMode() {
+            timerEnabled = !timerEnabled;
+            const btn = document.getElementById('toggleTimer');
+            const timers = document.querySelectorAll('.task-timer-controls');
+            
+            if (timerEnabled) {
+                btn.classList.add('active');
+                timers.forEach(timer => timer.classList.add('visible'));
+            } else {
+                btn.classList.remove('active');
+                timers.forEach(timer => timer.classList.remove('visible'));
+            }
+        }
+
+        // Update task numbers
+        function updateTaskNumbers() {
+            const tasks = document.querySelectorAll('#tasksGrid .task-item');
+            const total = tasks.length;
+            tasks.forEach((task, index) => {
+                const numberEl = task.querySelector('.task-number');
+                if (numberEl) {
+                    numberEl.textContent = `${index + 1}/${total}`;
+                }
+            });
+        }
+
+        // Drag and drop functionality
+        function setupDragAndDrop(taskItem) {
+            taskItem.addEventListener('dragstart', function(e) {
+                this.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            taskItem.addEventListener('dragend', function(e) {
+                this.classList.remove('dragging');
+                document.querySelectorAll('.task-item').forEach(item => {
+                    item.classList.remove('drag-over');
+                });
+                updateTaskNumbers();
+            });
+
+            taskItem.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const draggingItem = document.querySelector('.dragging');
+                if (draggingItem && draggingItem !== this) {
+                    this.classList.add('drag-over');
+                }
+            });
+
+            taskItem.addEventListener('dragleave', function(e) {
+                this.classList.remove('drag-over');
+            });
+
+            taskItem.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                const draggingItem = document.querySelector('.dragging');
+                if (draggingItem && draggingItem !== this) {
+                    const tasksGrid = document.getElementById('tasksGrid');
+                    const allTasks = [...tasksGrid.querySelectorAll('.task-item')];
+                    const dragIndex = allTasks.indexOf(draggingItem);
+                    const dropIndex = allTasks.indexOf(this);
+                    
+                    if (dragIndex < dropIndex) {
+                        this.parentNode.insertBefore(draggingItem, this.nextSibling);
+                    } else {
+                        this.parentNode.insertBefore(draggingItem, this);
+                    }
+                }
+            });
+        }
+
+        // Timer functions
+        function startTaskTimer(btn) {
+            const taskItem = btn.closest('.task-item');
+            const timeInput = taskItem.querySelector('.task-time-input');
+            const timerDisplay = taskItem.querySelector('.task-timer-display');
+            const taskId = Array.from(document.querySelectorAll('#tasksGrid .task-item')).indexOf(taskItem);
+            
+            if (taskTimers.has(taskId)) {
+                const timer = taskTimers.get(taskId);
+                if (timer.paused) {
+                    timer.paused = false;
+                    timer.startTime = Date.now() - (timer.elapsed * 1000);
+                }
+                return;
+            }
+            
+            const minutes = parseInt(timeInput.value) || 30;
+            const totalSeconds = minutes * 60;
+            
+            const timer = {
+                startTime: Date.now(),
+                totalSeconds: totalSeconds,
+                elapsed: 0,
+                paused: false,
+                interval: setInterval(() => {
+                    if (!timer.paused) {
+                        timer.elapsed = Math.floor((Date.now() - timer.startTime) / 1000);
+                        const remaining = Math.max(0, totalSeconds - timer.elapsed);
+                        const mins = Math.floor(remaining / 60);
+                        const secs = remaining % 60;
+                        timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                        
+                        if (remaining === 0) {
+                            clearInterval(timer.interval);
+                            taskTimers.delete(taskId);
+                            showNotification('⏰ Время вышло!');
+                        }
+                    }
+                }, 100)
+            };
+            
+            taskTimers.set(taskId, timer);
+        }
+
+        function pauseTaskTimer(btn) {
+            const taskItem = btn.closest('.task-item');
+            const taskId = Array.from(document.querySelectorAll('#tasksGrid .task-item')).indexOf(taskItem);
+            
+            if (taskTimers.has(taskId)) {
+                const timer = taskTimers.get(taskId);
+                timer.paused = !timer.paused;
+            }
+        }
+
+        function stopTaskTimer(btn) {
+            const taskItem = btn.closest('.task-item');
+            const timeInput = taskItem.querySelector('.task-time-input');
+            const timerDisplay = taskItem.querySelector('.task-timer-display');
+            const taskId = Array.from(document.querySelectorAll('#tasksGrid .task-item')).indexOf(taskItem);
+            
+            if (taskTimers.has(taskId)) {
+                const timer = taskTimers.get(taskId);
+                clearInterval(timer.interval);
+                taskTimers.delete(taskId);
+            }
+            
+            const minutes = parseInt(timeInput.value) || 30;
+            timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:00`;
+        }
+
+        // Check task completion and award XP
+        function checkTaskCompletionAndAwardXP() {
+            const tasks = document.querySelectorAll('#tasksGrid .task-item');
+            const completed = document.querySelectorAll('#tasksGrid .task-item .task-checkbox.checked').length;
+            const total = tasks.length;
+            const percentage = (completed / total) * 100;
+            
+            let xpAwarded = 0;
+            if (percentage >= 100) {
+                xpAwarded = 500;
+            } else if (percentage >= 70) {
+                xpAwarded = 300;
+            } else if (percentage >= 50) {
+                xpAwarded = 150;
+            }
+            
+            if (xpAwarded > 0 && completed === Math.ceil(total * (percentage / 100))) {
+                // Award XP
+                const xpType = Math.random() > 0.5 ? 'intelligence' : 'creativity';
+                currentXP[xpType] += xpAwarded;
+                
+                // Update XP display
+                const xpCircle = document.querySelector(`.xp-circle.${xpType} .xp-number`);
+                if (xpCircle) {
+                    xpCircle.textContent = currentXP[xpType];
+                }
+                
+                // Show notification
+                showXPNotification(xpAwarded, xpType);
+            }
+        }
+
+        // Show XP notification
+        function showXPNotification(xp, type) {
+            const notification = document.createElement('div');
+            notification.className = 'xp-notification';
+            notification.textContent = `+${xp} XP ${type === 'intelligence' ? '🧠' : '🎨'}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // Show general notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'xp-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
 
         // Math Game Functions
         let mathCurrentQuestionIndex = 0;
