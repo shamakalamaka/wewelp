@@ -761,24 +761,81 @@
             gap: 20px;
         }
 
-        .goal-item {
+        /* Новая система целей */
+        .goals-container {
             display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .goal-category {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .goal-category-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
+            padding: 12px 15px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .goal-item:hover {
+        .goal-category-header:hover {
             background: rgba(0, 0, 0, 0.5);
         }
 
+        .goal-category-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .goal-category-arrow {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .goal-category-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .goal-category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .goal-category-content.expanded {
+            max-height: 500px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .goal-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .goal-item:last-child {
+            border-bottom: none;
+        }
+
         .goal-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: linear-gradient(135deg, #9333ea, #06b6d4);
             flex-shrink: 0;
@@ -792,11 +849,231 @@
             font-size: 13px;
             font-weight: 500;
             margin-bottom: 2px;
+            color: #fff;
         }
 
         .goal-progress {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.5);
+        }
+
+        .add-goal-btn {
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #06b6d4;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .add-goal-btn:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .goal-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .goal-option {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .goal-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .goal-option.selected {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+        }
+
+        .goal-option-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .goal-option-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .custom-goal-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .custom-goal-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .warning-message {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #ffc107;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .task-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .task-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .task-option.selected {
+            background: rgba(6, 182, 212, 0.2);
+        }
+
+        .task-schedule {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .schedule-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .schedule-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .schedule-btn.active {
+            background: #06b6d4;
+            border-color: #06b6d4;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #06b6d4;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #0891b2;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .goal-check {
@@ -1997,38 +2274,64 @@
             <!-- Right Sidebar -->
             <aside class="right-sidebar">
                 <div class="card">
-                    <div class="card-title">Цели на месяц</div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Изучить задачу ньюз</div>
-                            <div class="goal-progress">Progress bar</div>
+                    <div class="card-title">Мои главные цели</div>
+                    <div class="goals-container">
+                        <!-- Долгосрочные цели -->
+                        <div class="goal-category">
+                            <div class="goal-category-header" onclick="toggleGoalCategory('long-term')">
+                                <span class="goal-category-title">🎯 Долгосрочные цели</span>
+                                <span class="goal-category-arrow">▼</span>
+                            </div>
+                            <div class="goal-category-content" id="long-term-goals">
+                                <div class="goal-item" onclick="openGoalModal('long', 0)">
+                                    <div class="goal-avatar"></div>
+                                    <div class="goal-info">
+                                        <div class="goal-title">Купить дом</div>
+                                        <div class="goal-progress">5 задач активно</div>
+                                    </div>
+                                    <div class="goal-check"></div>
+                                </div>
+                            </div>
+                            <div class="add-goal-btn" onclick="showGoalSelector('long')">+ Добавить цель</div>
                         </div>
-                        <div class="goal-check"></div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Научиться 10 зона</div>
-                            <div class="goal-progress">Progress bar</div>
+
+                        <!-- Среднесрочные цели -->
+                        <div class="goal-category">
+                            <div class="goal-category-header" onclick="toggleGoalCategory('medium-term')">
+                                <span class="goal-category-title">📈 Среднесрочные цели</span>
+                                <span class="goal-category-arrow">▼</span>
+                            </div>
+                            <div class="goal-category-content" id="medium-term-goals">
+                                <div class="goal-item" onclick="openGoalModal('medium', 0)">
+                                    <div class="goal-avatar"></div>
+                                    <div class="goal-info">
+                                        <div class="goal-title">Выучить английский</div>
+                                        <div class="goal-progress">3 задачи активно</div>
+                                    </div>
+                                    <div class="goal-check"></div>
+                                </div>
+                            </div>
+                            <div class="add-goal-btn" onclick="showGoalSelector('medium')">+ Добавить цель</div>
                         </div>
-                        <div class="goal-check"></div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Сделать заказов</div>
-                            <div class="goal-progress">Progress bar</div>
+
+                        <!-- Краткосрочные цели -->
+                        <div class="goal-category">
+                            <div class="goal-category-header" onclick="toggleGoalCategory('short-term')">
+                                <span class="goal-category-title">⚡ Краткосрочные цели</span>
+                                <span class="goal-category-arrow">▼</span>
+                            </div>
+                            <div class="goal-category-content" id="short-term-goals">
+                                <div class="goal-item" onclick="openGoalModal('short', 0)">
+                                    <div class="goal-avatar"></div>
+                                    <div class="goal-info">
+                                        <div class="goal-title">Прочитать 2 книги</div>
+                                        <div class="goal-progress">2 задачи активно</div>
+                                    </div>
+                                    <div class="goal-check"></div>
+                                </div>
+                            </div>
+                            <div class="add-goal-btn" onclick="showGoalSelector('short')">+ Добавить цель</div>
                         </div>
-                        <div class="goal-check"></div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Найти по новому</div>
-                            <div class="goal-progress">Progress bar</div>
-                        </div>
-                        <div class="goal-check checked"></div>
                     </div>
                 </div>
             </aside>
@@ -2863,6 +3166,378 @@
                 }
             }
         });
+        
+        // === СИСТЕМА ЦЕЛЕЙ ===
+        
+        // Данные целей
+        const goalsData = {
+            long: [],
+            medium: [],
+            short: []
+        };
+
+        // Популярные варианты целей
+        const popularGoals = {
+            long: [
+                { title: 'Купить дом', desc: 'Накопить на собственное жилье' },
+                { title: 'Купить машину', desc: 'Приобрести автомобиль' },
+                { title: 'Получить диплом', desc: 'Завершить высшее образование' },
+                { title: 'Создать бизнес', desc: 'Открыть собственное дело' },
+                { title: 'Переехать в другую страну', desc: 'Эмигрировать' }
+            ],
+            medium: [
+                { title: 'Выучить английский', desc: 'Достичь уровня B2-C1' },
+                { title: 'Похудеть на 10 кг', desc: 'Привести себя в форму' },
+                { title: 'Найти новую работу', desc: 'Сменить место работы' },
+                { title: 'Научиться программировать', desc: 'Освоить IT навыки' },
+                { title: 'Пройти курс повышения квалификации', desc: 'Развить профессиональные навыки' }
+            ],
+            short: [
+                { title: 'Прочитать 5 книг', desc: 'За этот месяц' },
+                { title: 'Заниматься спортом 20 дней', desc: 'Регулярные тренировки' },
+                { title: 'Изучить новый навык', desc: 'Освоить что-то новое' },
+                { title: 'Встретиться с друзьями 5 раз', desc: 'Социальная активность' },
+                { title: 'Организовать рабочее место', desc: 'Навести порядок' }
+            ]
+        };
+
+        // Задачи для целей
+        const goalTasks = {
+            'Купить дом': [
+                'Рассчитать бюджет на покупку',
+                'Изучить рынок недвижимости',
+                'Получить одобрение ипотеки',
+                'Найти риелтора',
+                'Посмотреть 5 вариантов квартир'
+            ],
+            'Купить машину': [
+                'Определить бюджет на автомобиль',
+                'Изучить модели в ценовой категории',
+                'Проверить историю автомобиля',
+                'Пройти техосмотр',
+                'Оформить страховку'
+            ],
+            'Выучить английский': [
+                'Определить текущий уровень',
+                'Выбрать методику изучения',
+                'Заниматься 30 минут в день',
+                'Смотреть фильмы на английском',
+                'Найти собеседника для практики'
+            ],
+            'Прочитать 5 книг': [
+                'Составить список книг',
+                'Читать 30 страниц в день',
+                'Делать заметки по прочитанному',
+                'Обсуждать книги с друзьями',
+                'Написать отзывы на книги'
+            ]
+        };
+
+        // Переключение категорий целей
+        function toggleGoalCategory(categoryId) {
+            const content = document.getElementById(categoryId + '-goals');
+            const arrow = content.parentElement.querySelector('.goal-category-arrow');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('rotated');
+            } else {
+                content.classList.add('expanded');
+                arrow.classList.add('rotated');
+            }
+        }
+
+        // Показать селектор целей
+        function showGoalSelector(type) {
+            const modal = document.getElementById('goalSelectorModal');
+            const title = document.getElementById('goalSelectorTitle');
+            const selector = document.getElementById('goalSelector');
+            
+            title.textContent = `Выберите ${type === 'long' ? 'долгосрочную' : type === 'medium' ? 'среднесрочную' : 'краткосрочную'} цель`;
+            
+            // Очистить селектор
+            selector.innerHTML = '';
+            
+            // Добавить популярные варианты
+            popularGoals[type].forEach((goal, index) => {
+                const option = document.createElement('div');
+                option.className = 'goal-option';
+                option.onclick = () => selectGoalOption(option, type, goal.title);
+                option.innerHTML = `
+                    <div class="goal-option-title">${goal.title}</div>
+                    <div class="goal-option-desc">${goal.desc}</div>
+                `;
+                selector.appendChild(option);
+            });
+            
+            // Показать предупреждение если уже выбрано 3+ целей
+            const warning = document.getElementById('goalWarning');
+            if (goalsData[type].length >= 3) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+            
+            modal.classList.add('active');
+            currentGoalType = type;
+        }
+
+        let currentGoalType = '';
+        let selectedGoals = [];
+
+        // Выбор варианта цели
+        function selectGoalOption(element, type, title) {
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                selectedGoals.push(title);
+            } else {
+                selectedGoals = selectedGoals.filter(g => g !== title);
+            }
+            
+            // Показать предупреждение если выбрано больше 3
+            const warning = document.getElementById('goalWarning');
+            if (selectedGoals.length > 3) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+
+        // Добавить выбранные цели
+        function addSelectedGoals() {
+            const customInput = document.getElementById('customGoalInput');
+            const customGoal = customInput.value.trim();
+            
+            // Добавить кастомную цель если введена
+            if (customGoal) {
+                selectedGoals.push(customGoal);
+            }
+            
+            // Добавить все выбранные цели
+            selectedGoals.forEach(goalTitle => {
+                const goal = {
+                    title: goalTitle,
+                    tasks: goalTasks[goalTitle] || ['Определить первые шаги', 'Составить план действий', 'Начать выполнение'],
+                    activeTasks: []
+                };
+                goalsData[currentGoalType].push(goal);
+            });
+            
+            // Обновить отображение
+            updateGoalsDisplay();
+            closeGoalSelector();
+        }
+
+        // Закрыть селектор целей
+        function closeGoalSelector() {
+            document.getElementById('goalSelectorModal').classList.remove('active');
+            selectedGoals = [];
+            document.getElementById('customGoalInput').value = '';
+            document.querySelectorAll('.goal-option.selected').forEach(el => el.classList.remove('selected'));
+        }
+
+        // Открыть модальное окно цели
+        function openGoalModal(type, index) {
+            const goal = goalsData[type][index];
+            if (!goal) return;
+            
+            const modal = document.getElementById('goalModal');
+            const title = document.getElementById('goalModalTitle');
+            const tasksList = document.getElementById('goalTasksList');
+            
+            title.textContent = goal.title;
+            
+            // Очистить список задач
+            tasksList.innerHTML = '';
+            
+            // Добавить задачи
+            goal.tasks.forEach((task, taskIndex) => {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-option';
+                taskElement.innerHTML = `
+                    <div>
+                        <div>${task}</div>
+                        <div class="task-schedule">
+                            <span style="font-size: 12px; color: rgba(255,255,255,0.6);">Расписание:</span>
+                            <button class="schedule-btn" onclick="setTaskSchedule(this, 'daily')">Каждый день</button>
+                            <button class="schedule-btn" onclick="setTaskSchedule(this, 'weekly')">Еженедельно</button>
+                            <button class="schedule-btn" onclick="setTaskSchedule(this, 'once')">Один раз</button>
+                        </div>
+                    </div>
+                    <input type="checkbox" ${goal.activeTasks.includes(taskIndex) ? 'checked' : ''} 
+                           onchange="toggleTaskActive('${type}', ${index}, ${taskIndex}, this.checked)">
+                `;
+                tasksList.appendChild(taskElement);
+            });
+            
+            modal.classList.add('active');
+            currentGoalType = type;
+            currentGoalIndex = index;
+        }
+
+        let currentGoalIndex = 0;
+
+        // Переключить активность задачи
+        function toggleTaskActive(type, goalIndex, taskIndex, isActive) {
+            const goal = goalsData[type][goalIndex];
+            if (isActive) {
+                if (!goal.activeTasks.includes(taskIndex)) {
+                    goal.activeTasks.push(taskIndex);
+                }
+            } else {
+                goal.activeTasks = goal.activeTasks.filter(i => i !== taskIndex);
+            }
+            updateGoalsDisplay();
+        }
+
+        // Установить расписание задачи
+        function setTaskSchedule(button, schedule) {
+            // Убрать активный класс у всех кнопок в этой группе
+            const scheduleButtons = button.parentElement.querySelectorAll('.schedule-btn');
+            scheduleButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Добавить активный класс к выбранной кнопке
+            button.classList.add('active');
+            
+            // Здесь можно добавить логику сохранения расписания
+            console.log('Установлено расписание:', schedule);
+        }
+
+        // Закрыть модальное окно цели
+        function closeGoalModal() {
+            document.getElementById('goalModal').classList.remove('active');
+        }
+
+        // Обновить отображение целей
+        function updateGoalsDisplay() {
+            ['long', 'medium', 'short'].forEach(type => {
+                const container = document.getElementById(type + '-term-goals');
+                container.innerHTML = '';
+                
+                goalsData[type].forEach((goal, index) => {
+                    const goalElement = document.createElement('div');
+                    goalElement.className = 'goal-item';
+                    goalElement.onclick = () => openGoalModal(type, index);
+                    goalElement.innerHTML = `
+                        <div class="goal-avatar"></div>
+                        <div class="goal-info">
+                            <div class="goal-title">${goal.title}</div>
+                            <div class="goal-progress">${goal.activeTasks.length} задач активно</div>
+                        </div>
+                        <div class="goal-check"></div>
+                    `;
+                    container.appendChild(goalElement);
+                });
+            });
+        }
+
+        // Добавить задачи в "Задания дня"
+        function addTasksToDaily() {
+            // Собрать все активные задачи из целей
+            const dailyTasks = [];
+            
+            ['long', 'medium', 'short'].forEach(type => {
+                goalsData[type].forEach(goal => {
+                    goal.activeTasks.forEach(taskIndex => {
+                        dailyTasks.push({
+                            text: goal.tasks[taskIndex],
+                            goal: goal.title,
+                            type: type
+                        });
+                    });
+                });
+            });
+            
+            // Добавить задачи в блок "Задания дня от dophon"
+            // Здесь нужно интегрироваться с существующей системой задач
+            console.log('Задачи для добавления в ежедневные:', dailyTasks);
+        }
+
+        // Инициализация системы целей
+        function initGoalsSystem() {
+            // Добавить начальные цели для демонстрации
+            goalsData.long.push({
+                title: 'Купить дом',
+                tasks: goalTasks['Купить дом'],
+                activeTasks: [0, 1]
+            });
+            
+            goalsData.medium.push({
+                title: 'Выучить английский',
+                tasks: goalTasks['Выучить английский'],
+                activeTasks: [0, 2]
+            });
+            
+            goalsData.short.push({
+                title: 'Прочитать 5 книг',
+                tasks: goalTasks['Прочитать 5 книг'],
+                activeTasks: [1]
+            });
+            
+            updateGoalsDisplay();
+            
+            // Развернуть все категории по умолчанию
+            ['long-term', 'medium-term', 'short-term'].forEach(categoryId => {
+                const content = document.getElementById(categoryId + '-goals');
+                const arrow = content.parentElement.querySelector('.goal-category-arrow');
+                content.classList.add('expanded');
+                arrow.classList.add('rotated');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initGoalsSystem();
+        });
     </script>
+
+    <!-- Модальные окна для системы целей -->
+    <div class="modal-overlay" id="goalSelectorModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="goalSelectorTitle">Выберите цель</h3>
+                <button class="modal-close" onclick="closeGoalSelector()">×</button>
+            </div>
+            
+            <div id="goalWarning" class="warning-message" style="display: none;">
+                ⚠️ Не рекомендуется выбирать больше 3 целей одновременно, так как это снижает фокусировку и эффективность достижения результатов.
+            </div>
+            
+            <div class="goal-selector" id="goalSelector">
+                <!-- Популярные варианты будут добавлены динамически -->
+            </div>
+            
+            <input type="text" class="custom-goal-input" id="customGoalInput" placeholder="Или введите свою цель...">
+            
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeGoalSelector()">Отмена</button>
+                <button class="btn btn-primary" onclick="addSelectedGoals()">Добавить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="goalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="goalModalTitle">Цель</h3>
+                <button class="modal-close" onclick="closeGoalModal()">×</button>
+            </div>
+            
+            <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7); font-size: 14px;">
+                Выберите задачи для этой цели и настройте расписание их появления в блоке "Задания дня от dophon":
+            </p>
+            
+            <div class="task-list" id="goalTasksList">
+                <!-- Задачи будут добавлены динамически -->
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeGoalModal()">Закрыть</button>
+                <button class="btn btn-primary" onclick="addTasksToDaily()">Применить расписание</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
