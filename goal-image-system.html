@@ -1,0 +1,627 @@
+<!-- Система выбора картинок для целей -->
+<div class="modal-overlay" id="goalImageModal">
+    <div class="modal image-selector-modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Выберите картинку для цели</h3>
+            <button class="modal-close" onclick="closeImageSelector()">×</button>
+        </div>
+        
+        <div class="image-selector-tabs">
+            <button class="image-tab active" onclick="switchImageTab('default')">
+                🎨 Готовые иконки
+            </button>
+            <button class="image-tab" onclick="switchImageTab('upload')">
+                📁 Загрузить свою
+            </button>
+        </div>
+        
+        <!-- Готовые иконки -->
+        <div class="image-tab-content active" id="defaultImagesTab">
+            <div class="default-images-grid">
+                <!-- Дом и недвижимость -->
+                <div class="image-option" data-icon="🏠" onclick="selectDefaultImage('🏠')">
+                    <div class="image-preview">🏠</div>
+                    <div class="image-label">Дом</div>
+                </div>
+                <div class="image-option" data-icon="🏢" onclick="selectDefaultImage('🏢')">
+                    <div class="image-preview">🏢</div>
+                    <div class="image-label">Офис</div>
+                </div>
+                <div class="image-option" data-icon="🏡" onclick="selectDefaultImage('🏡')">
+                    <div class="image-preview">🏡</div>
+                    <div class="image-label">Коттедж</div>
+                </div>
+                
+                <!-- Транспорт -->
+                <div class="image-option" data-icon="🚗" onclick="selectDefaultImage('🚗')">
+                    <div class="image-preview">🚗</div>
+                    <div class="image-label">Машина</div>
+                </div>
+                <div class="image-option" data-icon="🚙" onclick="selectDefaultImage('🚙')">
+                    <div class="image-preview">🚙</div>
+                    <div class="image-label">Внедорожник</div>
+                </div>
+                <div class="image-option" data-icon="🏍️" onclick="selectDefaultImage('🏍️')">
+                    <div class="image-preview">🏍️</div>
+                    <div class="image-label">Мотоцикл</div>
+                </div>
+                
+                <!-- Образование -->
+                <div class="image-option" data-icon="🎓" onclick="selectDefaultImage('🎓')">
+                    <div class="image-preview">🎓</div>
+                    <div class="image-label">Диплом</div>
+                </div>
+                <div class="image-option" data-icon="📚" onclick="selectDefaultImage('📚')">
+                    <div class="image-preview">📚</div>
+                    <div class="image-label">Книги</div>
+                </div>
+                <div class="image-option" data-icon="🌐" onclick="selectDefaultImage('🌐')">
+                    <div class="image-preview">🌐</div>
+                    <div class="image-label">Языки</div>
+                </div>
+                
+                <!-- Здоровье и спорт -->
+                <div class="image-option" data-icon="💪" onclick="selectDefaultImage('💪')">
+                    <div class="image-preview">💪</div>
+                    <div class="image-label">Спорт</div>
+                </div>
+                <div class="image-option" data-icon="🏃‍♂️" onclick="selectDefaultImage('🏃‍♂️')">
+                    <div class="image-preview">🏃‍♂️</div>
+                    <div class="image-label">Бег</div>
+                </div>
+                <div class="image-option" data-icon="🧘‍♀️" onclick="selectDefaultImage('🧘‍♀️')">
+                    <div class="image-preview">🧘‍♀️</div>
+                    <div class="image-label">Йога</div>
+                </div>
+                
+                <!-- Карьера и бизнес -->
+                <div class="image-option" data-icon="💼" onclick="selectDefaultImage('💼')">
+                    <div class="image-preview">💼</div>
+                    <div class="image-label">Карьера</div>
+                </div>
+                <div class="image-option" data-icon="💰" onclick="selectDefaultImage('💰')">
+                    <div class="image-preview">💰</div>
+                    <div class="image-label">Деньги</div>
+                </div>
+                <div class="image-option" data-icon="🚀" onclick="selectDefaultImage('🚀')">
+                    <div class="image-preview">🚀</div>
+                    <div class="image-label">Стартап</div>
+                </div>
+                
+                <!-- Путешествия -->
+                <div class="image-option" data-icon="✈️" onclick="selectDefaultImage('✈️')">
+                    <div class="image-preview">✈️</div>
+                    <div class="image-label">Путешествия</div>
+                </div>
+                <div class="image-option" data-icon="🌍" onclick="selectDefaultImage('🌍')">
+                    <div class="image-preview">🌍</div>
+                    <div class="image-label">Мир</div>
+                </div>
+                <div class="image-option" data-icon="🏖️" onclick="selectDefaultImage('🏖️')">
+                    <div class="image-preview">🏖️</div>
+                    <div class="image-label">Отпуск</div>
+                </div>
+                
+                <!-- Творчество -->
+                <div class="image-option" data-icon="🎨" onclick="selectDefaultImage('🎨')">
+                    <div class="image-preview">🎨</div>
+                    <div class="image-label">Искусство</div>
+                </div>
+                <div class="image-option" data-icon="🎵" onclick="selectDefaultImage('🎵')">
+                    <div class="image-preview">🎵</div>
+                    <div class="image-label">Музыка</div>
+                </div>
+                <div class="image-option" data-icon="📸" onclick="selectDefaultImage('📸')">
+                    <div class="image-preview">📸</div>
+                    <div class="image-label">Фото</div>
+                </div>
+                
+                <!-- Отношения -->
+                <div class="image-option" data-icon="❤️" onclick="selectDefaultImage('❤️')">
+                    <div class="image-preview">❤️</div>
+                    <div class="image-label">Любовь</div>
+                </div>
+                <div class="image-option" data-icon="👨‍👩‍👧‍👦" onclick="selectDefaultImage('👨‍👩‍👧‍👦')">
+                    <div class="image-preview">👨‍👩‍👧‍👦</div>
+                    <div class="image-label">Семья</div>
+                </div>
+                <div class="image-option" data-icon="👥" onclick="selectDefaultImage('👥')">
+                    <div class="image-preview">👥</div>
+                    <div class="image-label">Друзья</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Загрузка собственной картинки -->
+        <div class="image-tab-content" id="uploadImagesTab">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">
+                    <div class="upload-title">Перетащите изображение сюда</div>
+                    <div class="upload-subtitle">или нажмите для выбора файла</div>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            </div>
+            
+            <div class="upload-preview" id="uploadPreview" style="display: none;">
+                <img id="previewImage" alt="Preview">
+                <div class="upload-actions">
+                    <button class="btn btn-secondary" onclick="clearUpload()">Удалить</button>
+                    <button class="btn btn-primary" onclick="confirmUpload()">Использовать</button>
+                </div>
+            </div>
+            
+            <div class="upload-tips">
+                <div class="tip-item">💡 Рекомендуемый размер: 200x200 пикселей</div>
+                <div class="tip-item">📏 Поддерживаемые форматы: JPG, PNG, GIF</div>
+                <div class="tip-item">📦 Максимальный размер: 2 МБ</div>
+            </div>
+        </div>
+        
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeImageSelector()">Отмена</button>
+            <button class="btn btn-primary" id="confirmImageBtn" onclick="confirmImageSelection()" disabled>
+                Применить
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Стили для системы выбора картинок */
+.image-selector-modal {
+    max-width: 700px;
+    width: 95%;
+    max-height: 90vh;
+}
+
+.image-selector-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.image-tab {
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.image-tab:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.image-tab.active {
+    color: #06b6d4;
+    border-bottom-color: #06b6d4;
+}
+
+.image-tab-content {
+    display: none;
+}
+
+.image-tab-content.active {
+    display: block;
+}
+
+.default-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.image-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.image-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #06b6d4;
+    transform: translateY(-2px);
+}
+
+.image-option.selected {
+    background: rgba(6, 182, 212, 0.2);
+    border-color: #06b6d4;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+.image-preview {
+    font-size: 32px;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.image-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.upload-area:hover {
+    border-color: #06b6d4;
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.upload-area.dragover {
+    border-color: #06b6d4;
+    background: rgba(6, 182, 212, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.upload-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.upload-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.upload-preview {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.upload-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.upload-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.upload-tips {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.tip-item {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tip-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Обновленные стили для целей с картинками */
+.goal-option-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #9333ea, #06b6d4);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.goal-option-image.custom-image {
+    background: none;
+    padding: 0;
+}
+
+.goal-option-image.custom-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.goal-settings-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+    transition: all 0.3s;
+    opacity: 0;
+}
+
+.goal-option:hover .goal-settings-btn {
+    opacity: 1;
+}
+
+.goal-settings-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: #06b6d4;
+}
+
+/* Скроллбар для сетки изображений */
+.default-images-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.default-images-grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.default-images-grid::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.5);
+    border-radius: 4px;
+}
+
+.default-images-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(6, 182, 212, 0.7);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .default-images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+    }
+    
+    .image-option {
+        padding: 8px 4px;
+    }
+    
+    .image-preview {
+        font-size: 24px;
+        margin-bottom: 4px;
+    }
+    
+    .image-label {
+        font-size: 10px;
+    }
+    
+    .upload-area {
+        padding: 30px 15px;
+    }
+    
+    .upload-icon {
+        font-size: 36px;
+    }
+    
+    .upload-title {
+        font-size: 14px;
+    }
+    
+    .upload-subtitle {
+        font-size: 12px;
+    }
+}
+</style>
+
+<script>
+// Система выбора картинок для целей
+let selectedImage = null;
+let currentGoalForImage = null;
+
+// Переключение вкладок
+function switchImageTab(tabName) {
+    // Убрать активный класс у всех вкладок
+    document.querySelectorAll('.image-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.image-tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Активировать выбранную вкладку
+    event.target.classList.add('active');
+    document.getElementById(tabName + 'ImagesTab').classList.add('active');
+    
+    // Сбросить выбор
+    resetImageSelection();
+}
+
+// Выбор готовой иконки
+function selectDefaultImage(icon) {
+    // Убрать выделение с других опций
+    document.querySelectorAll('.image-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    // Выделить выбранную опцию
+    event.target.closest('.image-option').classList.add('selected');
+    
+    selectedImage = {
+        type: 'emoji',
+        value: icon
+    };
+    
+    document.getElementById('confirmImageBtn').disabled = false;
+}
+
+// Открыть селектор изображений
+function openImageSelector(goalElement) {
+    currentGoalForImage = goalElement;
+    document.getElementById('goalImageModal').classList.add('active');
+    resetImageSelection();
+}
+
+// Сбросить выбор изображения
+function resetImageSelection() {
+    selectedImage = null;
+    document.getElementById('confirmImageBtn').disabled = true;
+    
+    // Убрать выделение
+    document.querySelectorAll('.image-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    // Скрыть превью загрузки
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('uploadArea').style.display = 'block';
+}
+
+// Закрыть селектор изображений
+function closeImageSelector() {
+    document.getElementById('goalImageModal').classList.remove('active');
+    resetImageSelection();
+    currentGoalForImage = null;
+}
+
+// Подтвердить выбор изображения
+function confirmImageSelection() {
+    if (!selectedImage || !currentGoalForImage) return;
+    
+    const imageElement = currentGoalForImage.querySelector('.goal-option-image');
+    
+    if (selectedImage.type === 'emoji') {
+        imageElement.textContent = selectedImage.value;
+        imageElement.classList.remove('custom-image');
+    } else if (selectedImage.type === 'upload') {
+        imageElement.innerHTML = `<img src="${selectedImage.value}" alt="Custom goal image">`;
+        imageElement.classList.add('custom-image');
+    }
+    
+    closeImageSelector();
+}
+
+// Обработка загрузки файлов
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('imageUpload');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewImage = document.getElementById('previewImage');
+    
+    // Клик по области загрузки
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    // Обработка выбора файла
+    fileInput.addEventListener('change', handleFileSelect);
+    
+    // Drag & Drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFile(files[0]);
+        }
+    });
+});
+
+function handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (file) {
+        handleFile(file);
+    }
+}
+
+function handleFile(file) {
+    // Проверка типа файла
+    if (!file.type.startsWith('image/')) {
+        alert('Пожалуйста, выберите изображение');
+        return;
+    }
+    
+    // Проверка размера файла (2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Размер файла не должен превышать 2 МБ');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        previewImage.src = e.target.result;
+        document.getElementById('uploadArea').style.display = 'none';
+        uploadPreview.style.display = 'block';
+        
+        selectedImage = {
+            type: 'upload',
+            value: e.target.result
+        };
+        
+        document.getElementById('confirmImageBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearUpload() {
+    document.getElementById('uploadArea').style.display = 'block';
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('imageUpload').value = '';
+    resetImageSelection();
+}
+
+function confirmUpload() {
+    if (selectedImage && selectedImage.type === 'upload') {
+        document.getElementById('confirmImageBtn').disabled = false;
+    }
+}
+</script>
