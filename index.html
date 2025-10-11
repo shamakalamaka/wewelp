@@ -1997,11 +1997,11 @@
             <!-- Right Sidebar -->
             <aside class="right-sidebar">
                 <div class="card">
-                    <div class="card-title">Мои Главные Цели</div>
-                <div class="goals-list" id="mainGoalsContainer">
-                    <!-- Main goals will be rendered here by JavaScript -->
+                    <div class="card-title">Мои главные цели</div>
+                <div class="goals-list" id="longTermGoalsContainer">
+                    <!-- Long-term goals will be rendered here by JavaScript -->
                 </div>
-                <button class="action-btn" id="addMainGoalBtn">Добавить Главную Цель</button>
+                <button class="action-btn" id="addLongTermGoalBtn">Добавить Долгосрочную Цель</button>
 
                 <div class="card-title" style="margin-top: 20px;">Среднесрочные Цели</div>
                 <div class="goals-list" id="mediumGoalsContainer">
@@ -2009,14 +2009,13 @@
                 </div>
                 <button class="action-btn" id="addMediumGoalBtn">Добавить Среднесрочную Цель</button>
 
-                <!-- Add Goal Modal -->
-                <div class="modal" id="addGoalModal">
-                    <div class="modal-content">
-                        <button class="modal-close-btn" onclick="closeAddGoalModal()">✖</button>
-                        <h2 class="modal-title" id="addGoalModalTitle">Добавить Цель</h2>
+                <div class="card-title" style="margin-top: 20px;">Краткосрочные Цели</div>
+                <div class="goals-list" id="shortTermGoalsContainer">
+                    <!-- Short-term goals will be rendered here by JavaScript -->
+                </div>
+                <button class="action-btn" id="addShortTermGoalBtn">Добавить Краткосрочную Цель</button>
 
-                        <div class="modal-input-group">
-                            <label for="goalNameInput">Название цели:</label>
+                  <label for="goalNameInput">Название цели:</label>
                             <input type="text" id="goalNameInput" placeholder="Например: Купить машину">
                         </div>
 
@@ -3061,37 +3060,41 @@
 // Goal Management System
 
 let goals = {
-    main: [],
-    medium: []
+    longTerm: [],
+    mediumTerm: [],
+    shortTerm: []
 };
 
 let currentGoal = null;
 let currentTask = null;
 
-const addMainGoalBtn = document.getElementById("addMainGoalBtn");
+const addLongTermGoalBtn = document.getElementById("addLongTermGoalBtn");
 const addMediumGoalBtn = document.getElementById("addMediumGoalBtn");
+const addShortTermGoalBtn = document.getElementById("addShortTermGoalBtn");
 
-addMainGoalBtn.addEventListener("click", () => openModal("addGoalModal", "main"));
-addMediumGoalBtn.addEventListener("click", () => openModal("addGoalModal", "medium"));
+addLongTermGoalBtn.addEventListener("click", () => openAddGoalModal("longTerm"));
+addMediumGoalBtn.addEventListener("click", () => openAddGoalModal("mediumTerm"));
+addShortTermGoalBtn.addEventListener("click", () => openAddGoalModal("shortTerm"));
 
-function openModal(modalId, goalType = null) {
-    const modal = document.getElementById(modalId);
-    modal.style.display = "block";
-    if (goalType) {
-        currentGoal = { type: goalType };
-        if (modalId === "addGoalModal") {
-            populateGoalOptions();
-        }
-    }
+function openAddGoalModal(goalType) {
+    currentGoal = { type: goalType };
+    document.getElementById("addGoalModal").style.display = "block";
+    document.getElementById("goalNameInput").value = "";
+    document.getElementById("goalImageInput").value = "";
+    document.getElementById("goalImagePreview").style.display = "none";
+    document.getElementById("goalImagePreview").src = "";
+    document.getElementById("goalSelectionWarning").style.display = "none";
+    populatePopularGoalOptions();
 }
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.style.display = "none";
 }
+let selectedPopularGoals = [];
 
-function populateGoalOptions() {
-    const options = [
+function populatePopularGoalOptions() {
+    const popularOptions = [
         { name: "Купить машину", img: "https://via.placeholder.com/150" },
         { name: "Выучить новый язык", img: "https://via.placeholder.com/150" },
         { name: "Начать бизнес", img: "https://via.placeholder.com/150" },
@@ -3100,25 +3103,47 @@ function populateGoalOptions() {
         { name: "Прочитать 10 книг", img: "https://via.placeholder.com/150" }
     ];
 
-    const container = document.getElementById("goalOptionsContainer");
+    const container = document.getElementById("popularGoalOptions");
     container.innerHTML = "";
-    const grid = document.createElement("div");
-    grid.className = "goal-option-grid";
+    selectedPopularGoals = [];
 
-    options.forEach(option => {
+    popularOptions.forEach(option => {
         const item = document.createElement("div");
         item.className = "goal-option-item";
         item.innerHTML = `
             <img src="${option.img}" alt="${option.name}">
             <span>${option.name}</span>
-            <button class="settings-btn" onclick="openGoalImageSettings(event)">⚙️</button>
         `;
-        item.onclick = () => {
-            document.getElementById("goalTitle").value = option.name;
-        };
-        grid.appendChild(item);
+        item.addEventListener("click", () => togglePopularGoalSelection(option, item));
+        container.appendChild(item);
     });
-    container.appendChild(grid);
+}
+
+function togglePopularGoalSelection(option, element) {
+    const warning = document.getElementById("goalSelectionWarning");
+    if (element.classList.contains("selected")) {
+        element.classList.remove("selected");
+        selectedPopularGoals = selectedPopularGoals.filter(g => g.name !== option.name);
+    } else {
+        if (selectedPopularGoals.length < 3) {
+            element.classList.add("selected");
+            selectedPopularGoals.push(option);
+            warning.style.display = "none";
+        } else {
+            warning.style.display = "block";
+        }
+    }
+    document.getElementById("goalNameInput").value = selectedPopularGoals.map(g => g.name).join(", ");
+}
+
+function previewGoalImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+        const output = document.getElementById("goalImagePreview");
+        output.src = reader.result;
+        output.style.display = "block";
+    };
+    reader.readAsDataURL(event.target.files[0]);
 }
 
 function openGoalImageSettings(event) {
@@ -3137,12 +3162,26 @@ function addCustomGoalOption() {
     }
 }
 
-function saveGoal() {
-    const title = document.getElementById("goalTitle").value;
+function saveNewGoal() {
+    const goalNameInput = document.getElementById("goalNameInput");
+    const goalImageInput = document.getElementById("goalImageInput");
+    const title = goalNameInput.value.trim();
+    let imageUrl = "";
+
+    if (goalImageInput.files && goalImageInput.files[0]) {
+        // Handle file upload (for simplicity, we'll use a placeholder or base64 encode)
+        // In a real application, you'd upload this to a server and get a URL
+        imageUrl = URL.createObjectURL(goalImageInput.files[0]);
+    } else if (selectedPopularGoals.length > 0) {
+        // If popular goals are selected, use the image from the first one (or a default)
+        imageUrl = selectedPopularGoals[0].img; // Or a default image
+    }
+
     if (title) {
         const newGoal = {
             id: Date.now(),
             title: title,
+            imageUrl: imageUrl,
             tasks: [],
             type: currentGoal.type
         };
@@ -3153,19 +3192,27 @@ function saveGoal() {
 }
 
 function renderGoals() {
-    const mainGoalsContainer = document.getElementById("mainGoalsContainer");
+    const longTermGoalsContainer = document.getElementById("longTermGoalsContainer");
     const mediumGoalsContainer = document.getElementById("mediumGoalsContainer");
-    mainGoalsContainer.innerHTML = "";
-    mediumGoalsContainer.innerHTML = "";
+    const shortTermGoalsContainer = document.getElementById("shortTermGoalsContainer");
 
-    goals.main.forEach(goal => {
+    longTermGoalsContainer.innerHTML = "";
+    mediumGoalsContainer.innerHTML = "";
+    shortTermGoalsContainer.innerHTML = "";
+
+    goals.longTerm.forEach(goal => {
         const goalElement = createGoalElement(goal);
-        mainGoalsContainer.appendChild(goalElement);
+        longTermGoalsContainer.appendChild(goalElement);
     });
 
-    goals.medium.forEach(goal => {
+    goals.mediumTerm.forEach(goal => {
         const goalElement = createGoalElement(goal);
         mediumGoalsContainer.appendChild(goalElement);
+    });
+
+    goals.shortTerm.forEach(goal => {
+        const goalElement = createGoalElement(goal);
+        shortTermGoalsContainer.appendChild(goalElement);
     });
 }
 
@@ -3173,6 +3220,7 @@ function createGoalElement(goal) {
     const goalElement = document.createElement("div");
     goalElement.className = "goal-item";
     goalElement.innerHTML = `
+        <img src="${goal.imageUrl || 'https://via.placeholder.com/36'}" class="goal-avatar" alt="Goal Image">
         <div class="goal-info">
             <div class="goal-title">${goal.title}</div>
         </div>
@@ -3189,65 +3237,278 @@ function openGoalDetail(goal) {
 }
 
 function renderGoalTasks() {
-    const tasksContainer = document.getElementById("goalDetailTasks");
+    const tasksContainer = document.getElementById("goalDetailTasksContainer");
     tasksContainer.innerHTML = "";
-    currentGoal.tasks.forEach(task => {
-        const taskElement = document.createElement("div");
-        taskElement.innerText = task.name;
-        taskElement.onclick = () => openTaskSchedule(task);
-        tasksContainer.appendChild(taskElement);
-    });
-}
-
-function addCustomTask() {
-    const taskName = document.getElementById("customTask").value;
-    if (taskName) {
-        const newTask = { id: Date.now(), name: taskName, schedule: null };
-        currentGoal.tasks.push(newTask);
-        renderGoalTasks();
-        document.getElementById("customTask").value = "";
+    if (currentGoal && currentGoal.tasks) {
+        currentGoal.tasks.forEach((task, index) => {
+            const taskElement = document.createElement("div");
+            taskElement.className = "goal-detail-task-item";
+            taskElement.innerHTML = `
+                <span>${task.name}</span>
+                <div class="task-actions">
+                    <button class="action-btn small" onclick="openTaskSchedule(${currentGoal.id}, ${task.id})">Расписание</button>
+                    <button class="action-btn small delete" onclick="deleteGoalTask(${currentGoal.id}, ${task.id})">Удалить</button>
+                </div>
+            `;
+            tasksContainer.appendChild(taskElement);
+        });
     }
 }
 
-function openTaskSchedule(task) {
-    currentTask = task;
-    document.getElementById("taskNameToSchedule").innerText = task.name;
-    openModal("taskScheduleModal");
-    renderCalendar();
+function addGoalTask() {
+    const newGoalTaskInput = document.getElementById("newGoalTaskInput");
+    const taskName = newGoalTaskInput.value.trim();
+    if (taskName && currentGoal) {
+        const newTask = { id: Date.now(), name: taskName, schedule: { type: 'none', days: [], date: null } };
+        currentGoal.tasks.push(newTask);
+        renderGoalTasks();
+        newGoalTaskInput.value = "";
+    }
+}
+
+function deleteGoalTask(goalId, taskId) {
+    const goal = findGoalById(goalId);
+    if (goal) {
+        goal.tasks = goal.tasks.filter(task => task.id !== taskId);
+        renderGoalTasks();
+    }
+}
+
+function findGoalById(id) {
+    for (const type in goals) {
+        const found = goals[type].find(goal => goal.id === id);
+        if (found) return found;
+    }
+    return null;
+}
+
+function findTaskById(goalId, taskId) {
+    const goal = findGoalById(goalId);
+    if (goal) {
+        return goal.tasks.find(task => task.id === taskId);
+    }
+    return null;
+}
+
+function openTaskSchedule(goalId, taskId) {
+    currentGoal = findGoalById(goalId);
+    currentTask = findTaskById(goalId, taskId);
+    if (currentTask) {
+        document.getElementById("taskScheduleName").value = currentTask.name;
+        const scheduleTypeRadios = document.querySelectorAll("input[name=\"scheduleType\"]");
+        scheduleTypeRadios.forEach(radio => {
+            radio.checked = (radio.value === currentTask.schedule.type);
+        });
+
+        document.getElementById("weeklyScheduleOptions").style.display = "none";
+        document.getElementById("customScheduleOptions").style.display = "none";
+
+        if (currentTask.schedule.type === "weekly") {
+            document.getElementById("weeklyScheduleOptions").style.display = "block";
+            renderWeeklyCalendar(currentTask.schedule.days);
+        } else if (currentTask.schedule.type === "once" || currentTask.schedule.type === "custom") {
+            document.getElementById("customScheduleOptions").style.display = "block";
+            document.getElementById("customDateInput").value = currentTask.schedule.date || "";
+        }
+        openModal("taskScheduleModal");
+    }
 }
 
 function setSchedule(type) {
     // Logic to handle schedule type selection
 }
 
-function renderCalendar() {
-    const calendar = document.getElementById("calendar");
-    calendar.innerHTML = "";
-    const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-    days.forEach((day, index) => {
+function renderWeeklyCalendar(selectedDays) {
+    const weeklyCalendarGrid = document.querySelector("#weeklyScheduleOptions .schedule-calendar-grid");
+    weeklyCalendarGrid.innerHTML = "";
+    const daysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+    daysOfWeek.forEach((dayName, index) => {
         const dayElement = document.createElement("div");
-        dayElement.className = "calendar-day";
-        dayElement.innerText = day;
-        dayElement.onclick = () => selectDay(index);
-        calendar.appendChild(dayElement);
+        dayElement.className = "schedule-calendar-day";
+        dayElement.textContent = dayName;
+        dayElement.dataset.day = index; // 0 for Sunday, 1 for Monday
+        if (selectedDays.includes(index)) {
+            dayElement.classList.add("selected");
+        }
+        dayElement.addEventListener("click", () => dayElement.classList.toggle("selected"));
+        weeklyCalendarGrid.appendChild(dayElement);
     });
 }
 
-function selectDay(dayIndex) {
-    // Logic to handle day selection
-}
 
-function saveSchedule() {
-    // Logic to save task schedule
+
+function saveTaskSchedule() {
+    if (!currentTask) return;
+
+    const scheduleType = document.querySelector("input[name=\"scheduleType\"]:checked").value;
+    currentTask.schedule.type = scheduleType;
+
+    if (scheduleType === "weekly") {
+        const selectedDays = Array.from(document.querySelectorAll("#weeklyScheduleOptions .schedule-calendar-day.selected"))
+                                .map(dayElement => parseInt(dayElement.dataset.day));
+        currentTask.schedule.days = selectedDays;
+        currentTask.schedule.date = null;
+    } else if (scheduleType === "once" || scheduleType === "custom") {
+        currentTask.schedule.date = document.getElementById("customDateInput").value;
+        currentTask.schedule.days = [];
+    } else {
+        currentTask.schedule.days = [];
+        currentTask.schedule.date = null;
+    }
+
+    saveGoalsToLocalStorage();
     closeModal("taskScheduleModal");
+    renderDailyTasks(); // Update daily tasks after saving schedule
 }
 
 function saveGoalDetails() {
-    // Logic to save goal details
-    closeModal("goalDetailModal");
+    if (currentGoal) {
+        currentGoal.description = document.getElementById("goalDetailDescription").value;
+        saveGoalsToLocalStorage();
+        closeModal("goalDetailModal");
+    }
+}
+
+function saveGoalsToLocalStorage() {
+    localStorage.setItem("goals", JSON.stringify(goals));
+}
+
+function loadGoalsFromLocalStorage() {
+    const savedGoals = localStorage.getItem("goals");
+    if (savedGoals) {
+        goals = JSON.parse(savedGoals);
+    }
+}
+
+function renderDailyTasks() {
+    const tasksGrid = document.getElementById("tasksGrid");
+    tasksGrid.innerHTML = "";
+    const today = new Date();
+    const todayDay = today.getDay(); // 0 for Sunday, 1 for Monday
+    const todayDate = today.toISOString().split("T")[0];
+
+    let dailyTasks = [];
+
+    for (const goalType in goals) {
+        goals[goalType].forEach(goal => {
+            goal.tasks.forEach(task => {
+                if (task.schedule) {
+                    if (task.schedule.type === "daily") {
+                        dailyTasks.push(task);
+                    } else if (task.schedule.type === "weekly" && task.schedule.days.includes(todayDay)) {
+                        dailyTasks.push(task);
+                    } else if ((task.schedule.type === "once" || task.schedule.type === "custom") && task.schedule.date === todayDate) {
+                        dailyTasks.push(task);
+                    }
+                }
+            });
+        });
+    }
+
+    dailyTasks.forEach((task, index) => {
+        const taskItem = document.createElement("div");
+        taskItem.className = "task-item";
+        taskItem.setAttribute("draggable", "true");
+        taskItem.innerHTML = `
+            <div class="task-number">${index + 1}/${dailyTasks.length}</div>
+            <div class="task-checkbox"></div>
+            <div class="task-text">${task.name}</div>
+            <div class="task-timer-toggle" onclick="toggleTaskTimer(this)">⏱️</div>
+            <div class="task-timer-controls">
+                <input type="number" class="task-time-input" placeholder="мин" value="60" min="1" />
+                <div class="task-timer-display">60:00</div>
+                <button class="timer-btn start" onclick="startTaskTimer(this)">▶</button>
+                <button class="timer-btn pause" onclick="pauseTaskTimer(this)">⏸</button>
+                <button class="timer-btn stop" onclick="stopTaskTimer(this)">⏹</button>
+            </div>
+        `;
+        tasksGrid.appendChild(taskItem);
+        setupDragAndDrop(taskItem);
+    });
+    updateTaskNumbers();
 }
 
 // Initial render
+loadGoalsFromLocalStorage();
 renderGoals();
+renderDailyTasks();
 
 </script>
+
+
+.goal-option-item.selected {
+    border: 2px solid #06b6d4;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+}
+
+.goal-selection-warning {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.goal-detail-task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.goal-detail-task-item .task-actions button {
+    margin-left: 5px;
+}
+
+.schedule-options label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.schedule-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.schedule-calendar-day {
+    padding: 10px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.schedule-calendar-day:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.schedule-calendar-day.selected {
+    background-color: #06b6d4;
+    color: white;
+}
+
+.modal-input-group input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.goal-image-upload-preview {
+    max-width: 100px;
+    max-height: 100px;
+    margin-top: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
