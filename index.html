@@ -1997,31 +1997,117 @@
             <!-- Right Sidebar -->
             <aside class="right-sidebar">
                 <div class="card">
-                    <div class="card-title">Цели на месяц</div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Изучить задачу ньюз</div>
-                            <div class="goal-progress">Progress bar</div>
+                    <div class="card-title">Мои Главные Цели</div>
+                <div class="goals-list" id="mainGoalsContainer">
+                    <!-- Main goals will be rendered here by JavaScript -->
+                </div>
+                <button class="action-btn" id="addMainGoalBtn">Добавить Главную Цель</button>
+
+                <div class="card-title" style="margin-top: 20px;">Среднесрочные Цели</div>
+                <div class="goals-list" id="mediumGoalsContainer">
+                    <!-- Medium goals will be rendered here by JavaScript -->
+                </div>
+                <button class="action-btn" id="addMediumGoalBtn">Добавить Среднесрочную Цель</button>
+
+                <!-- Add Goal Modal -->
+                <div class="modal" id="addGoalModal">
+                    <div class="modal-content">
+                        <button class="modal-close-btn" onclick="closeAddGoalModal()">✖</button>
+                        <h2 class="modal-title" id="addGoalModalTitle">Добавить Цель</h2>
+
+                        <div class="modal-input-group">
+                            <label for="goalNameInput">Название цели:</label>
+                            <input type="text" id="goalNameInput" placeholder="Например: Купить машину">
                         </div>
-                        <div class="goal-check"></div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Научиться 10 зона</div>
-                            <div class="goal-progress">Progress bar</div>
+
+                        <div class="modal-input-group">
+                            <label for="goalImageInput">Изображение цели (URL или загрузить):</label>
+                            <input type="file" id="goalImageInput" accept="image/*" onchange="previewGoalImage(event)">
+                            <img id="goalImagePreview" class="goal-image-upload-preview" style="display: none;" alt="Предпросмотр изображения">
                         </div>
-                        <div class="goal-check"></div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-avatar"></div>
-                        <div class="goal-info">
-                            <div class="goal-title">Сделать заказов</div>
-                            <div class="goal-progress">Progress bar</div>
+
+                        <div class="modal-section-title">Популярные варианты (выберите до 3):</div>
+                        <div class="goal-selection-grid" id="popularGoalOptions">
+                            <!-- Popular goal options will be rendered here by JavaScript -->
                         </div>
-                        <div class="goal-check"></div>
+                        <div class="goal-selection-warning" id="goalSelectionWarning" style="display: none;">Вы можете выбрать не более 3 вариантов.</div>
+
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" onclick="closeAddGoalModal()">Отмена</button>
+                            <button class="modal-btn" onclick="saveNewGoal()">Сохранить Цель</button>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Goal Detail Modal -->
+                <div class="modal" id="goalDetailModal">
+                    <div class="modal-content">
+                        <button class="modal-close-btn" onclick="closeGoalDetailModal()">✖</button>
+                        <h2 class="modal-title" id="goalDetailTitle">Название Цели</h2>
+
+                        <div class="modal-input-group">
+                            <label for="goalDetailDescription">Описание:</label>
+                            <textarea id="goalDetailDescription" placeholder="Подробное описание цели..."></textarea>
+                        </div>
+
+                        <div class="modal-section-title">Задачи</div>
+                        <div class="goal-detail-tasks" id="goalDetailTasksContainer">
+                            <!-- Tasks for the goal will be rendered here by JavaScript -->
+                        </div>
+                        <div class="modal-input-group" style="margin-top: 15px;">
+                            <input type="text" id="newGoalTaskInput" placeholder="Добавить новую задачу...">
+                        </div>
+
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" onclick="closeGoalDetailModal()">Закрыть</button>
+                            <button class="modal-btn" onclick="saveGoalDetails()">Сохранить Изменения</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Schedule Modal -->
+                <div class="modal" id="taskScheduleModal">
+                    <div class="modal-content task-schedule-modal-content">
+                        <button class="modal-close-btn" onclick="closeTaskScheduleModal()">✖</button>
+                        <h2 class="modal-title">Настроить Расписание Задачи</h2>
+
+                        <div class="modal-input-group">
+                            <label for="taskScheduleName">Задача:</label>
+                            <input type="text" id="taskScheduleName" readonly>
+                        </div>
+
+                        <div class="modal-section-title">Тип расписания</div>
+                        <div class="schedule-options">
+                            <label><input type="radio" name="scheduleType" value="daily"> Ежедневно</label>
+                            <label><input type="radio" name="scheduleType" value="weekly"> Еженедельно (выбрать дни)</label>
+                            <label><input type="radio" name="scheduleType" value="once"> Один раз (выбрать дату)</label>
+                            <label><input type="radio" name="scheduleType" value="custom"> Выбрать даты в календаре</label>
+                        </div>
+
+                        <div id="weeklyScheduleOptions" style="display: none;">
+                            <div class="modal-section-title">Дни недели</div>
+                            <div class="schedule-calendar-grid">
+                                <div class="schedule-calendar-day" data-day="1">Пн</div>
+                                <div class="schedule-calendar-day" data-day="2">Вт</div>
+                                <div class="schedule-calendar-day" data-day="3">Ср</div>
+                                <div class="schedule-calendar-day" data-day="4">Чт</div>
+                                <div class="schedule-calendar-day" data-day="5">Пт</div>
+                                <div class="schedule-calendar-day" data-day="6">Сб</div>
+                                <div class="schedule-calendar-day" data-day="0">Вс</div>
+                            </div>
+                        </div>
+
+                        <div id="customScheduleOptions" style="display: none;">
+                            <div class="modal-section-title">Выбрать дату</div>
+                            <input type="date" id="customDateInput">
+                        </div>
+
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" onclick="closeTaskScheduleModal()">Отмена</button>
+                            <button class="modal-btn" onclick="saveTaskSchedule()">Сохранить Расписание</button>
+                        </div>
+                    </div>
+                </div>
                     <div class="goal-item">
                         <div class="goal-avatar"></div>
                         <div class="goal-info">
@@ -2866,3 +2952,302 @@
     </script>
 </body>
 </html>
+
+<style>
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    background-color: #1a1a2e;
+    margin: 10% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#goalOptionsContainer, #goalDetailTasks {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#calendar {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    padding: 10px;
+    text-align: center;
+    background-color: #333;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.calendar-day.selected {
+    background-color: #007bff;
+}
+
+.goal-option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.goal-option-item {
+    background-color: #2a2a4e;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.goal-option-item:hover {
+    transform: translateY(-5px);
+}
+
+.goal-option-item img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.goal-option-item .settings-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+</style>
+
+<script>
+// Goal Management System
+
+let goals = {
+    main: [],
+    medium: []
+};
+
+let currentGoal = null;
+let currentTask = null;
+
+const addMainGoalBtn = document.getElementById("addMainGoalBtn");
+const addMediumGoalBtn = document.getElementById("addMediumGoalBtn");
+
+addMainGoalBtn.addEventListener("click", () => openModal("addGoalModal", "main"));
+addMediumGoalBtn.addEventListener("click", () => openModal("addGoalModal", "medium"));
+
+function openModal(modalId, goalType = null) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = "block";
+    if (goalType) {
+        currentGoal = { type: goalType };
+        if (modalId === "addGoalModal") {
+            populateGoalOptions();
+        }
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = "none";
+}
+
+function populateGoalOptions() {
+    const options = [
+        { name: "Купить машину", img: "https://via.placeholder.com/150" },
+        { name: "Выучить новый язык", img: "https://via.placeholder.com/150" },
+        { name: "Начать бизнес", img: "https://via.placeholder.com/150" },
+        { name: "Путешествовать", img: "https://via.placeholder.com/150" },
+        { name: "Стать здоровее", img: "https://via.placeholder.com/150" },
+        { name: "Прочитать 10 книг", img: "https://via.placeholder.com/150" }
+    ];
+
+    const container = document.getElementById("goalOptionsContainer");
+    container.innerHTML = "";
+    const grid = document.createElement("div");
+    grid.className = "goal-option-grid";
+
+    options.forEach(option => {
+        const item = document.createElement("div");
+        item.className = "goal-option-item";
+        item.innerHTML = `
+            <img src="${option.img}" alt="${option.name}">
+            <span>${option.name}</span>
+            <button class="settings-btn" onclick="openGoalImageSettings(event)">⚙️</button>
+        `;
+        item.onclick = () => {
+            document.getElementById("goalTitle").value = option.name;
+        };
+        grid.appendChild(item);
+    });
+    container.appendChild(grid);
+}
+
+function openGoalImageSettings(event) {
+    event.stopPropagation();
+    const newImage = prompt("Введите URL нового изображения:");
+    if (newImage) {
+        const imgElement = event.target.parentElement.querySelector("img");
+        imgElement.src = newImage;
+    }
+}
+
+function addCustomGoalOption() {
+    const customOption = document.getElementById("customGoalOption").value;
+    if (customOption) {
+        document.getElementById("goalTitle").value = customOption;
+    }
+}
+
+function saveGoal() {
+    const title = document.getElementById("goalTitle").value;
+    if (title) {
+        const newGoal = {
+            id: Date.now(),
+            title: title,
+            tasks: [],
+            type: currentGoal.type
+        };
+        goals[currentGoal.type].push(newGoal);
+        renderGoals();
+        closeModal("addGoalModal");
+    }
+}
+
+function renderGoals() {
+    const mainGoalsContainer = document.getElementById("mainGoalsContainer");
+    const mediumGoalsContainer = document.getElementById("mediumGoalsContainer");
+    mainGoalsContainer.innerHTML = "";
+    mediumGoalsContainer.innerHTML = "";
+
+    goals.main.forEach(goal => {
+        const goalElement = createGoalElement(goal);
+        mainGoalsContainer.appendChild(goalElement);
+    });
+
+    goals.medium.forEach(goal => {
+        const goalElement = createGoalElement(goal);
+        mediumGoalsContainer.appendChild(goalElement);
+    });
+}
+
+function createGoalElement(goal) {
+    const goalElement = document.createElement("div");
+    goalElement.className = "goal-item";
+    goalElement.innerHTML = `
+        <div class="goal-info">
+            <div class="goal-title">${goal.title}</div>
+        </div>
+    `;
+    goalElement.onclick = () => openGoalDetail(goal);
+    return goalElement;
+}
+
+function openGoalDetail(goal) {
+    currentGoal = goal;
+    document.getElementById("goalDetailTitle").innerText = goal.title;
+    renderGoalTasks();
+    openModal("goalDetailModal");
+}
+
+function renderGoalTasks() {
+    const tasksContainer = document.getElementById("goalDetailTasks");
+    tasksContainer.innerHTML = "";
+    currentGoal.tasks.forEach(task => {
+        const taskElement = document.createElement("div");
+        taskElement.innerText = task.name;
+        taskElement.onclick = () => openTaskSchedule(task);
+        tasksContainer.appendChild(taskElement);
+    });
+}
+
+function addCustomTask() {
+    const taskName = document.getElementById("customTask").value;
+    if (taskName) {
+        const newTask = { id: Date.now(), name: taskName, schedule: null };
+        currentGoal.tasks.push(newTask);
+        renderGoalTasks();
+        document.getElementById("customTask").value = "";
+    }
+}
+
+function openTaskSchedule(task) {
+    currentTask = task;
+    document.getElementById("taskNameToSchedule").innerText = task.name;
+    openModal("taskScheduleModal");
+    renderCalendar();
+}
+
+function setSchedule(type) {
+    // Logic to handle schedule type selection
+}
+
+function renderCalendar() {
+    const calendar = document.getElementById("calendar");
+    calendar.innerHTML = "";
+    const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+    days.forEach((day, index) => {
+        const dayElement = document.createElement("div");
+        dayElement.className = "calendar-day";
+        dayElement.innerText = day;
+        dayElement.onclick = () => selectDay(index);
+        calendar.appendChild(dayElement);
+    });
+}
+
+function selectDay(dayIndex) {
+    // Logic to handle day selection
+}
+
+function saveSchedule() {
+    // Logic to save task schedule
+    closeModal("taskScheduleModal");
+}
+
+function saveGoalDetails() {
+    // Logic to save goal details
+    closeModal("goalDetailModal");
+}
+
+// Initial render
+renderGoals();
+
+</script>
