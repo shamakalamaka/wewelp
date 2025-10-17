@@ -1939,6 +1939,32 @@
             gap: 10px;
         }
 
+        .daily-tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .daily-task-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .no-tasks-message {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            padding: 20px;
+        }
+
         .task-item {
             display: flex;
             align-items: center;
@@ -2308,6 +2334,14 @@
                                 <div class="goal-item add-goal-btn" data-category="short-term">+ Добавить цель</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <div class="card-title">Задания дня от dophon</div>
+                    <div class="daily-tasks-list" id="dailyTasksList">
+                        <!-- Ежедневные задачи будут здесь -->
+                        <div class="no-tasks-message" id="noDailyTasksMessage" style="display: none;">На сегодня заданий нет!</div>
                     </div>
                 </div>
             </aside>
@@ -3558,10 +3592,20 @@
                 });
             });
             
-            // Add tasks to "Задания дня от dophon" block
-            // This would integrate with existing task system
-            console.log('Daily tasks:', dailyTasks);
-        }
+            const dailyTasksList = document.getElementById(\'dailyTasksList\');
+            dailyTasksList.innerHTML = \'\'; // Clear previous tasks
+
+            if (dailyTasks.length === 0) {
+                document.getElementById(\'noDailyTasksMessage\').style.display = \'block\';
+            } else {
+                document.getElementById(\'noDailyTasksMessage\').style.display = \'none\';
+                dailyTasks.forEach(taskName => {
+                    const taskEl = document.createElement(\'div\');
+                    taskEl.className = \'daily-task-item\';
+                    taskEl.textContent = taskName;
+                    dailyTasksList.appendChild(taskEl);
+                });
+            }       }
         
         // Close goal modal
         function closeGoalModal() {
